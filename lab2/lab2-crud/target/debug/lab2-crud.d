@@ -1,1 +1,0 @@
-/home/tfy17jfo/Documents/5dv202-labs/lab2/lab2-crud/target/debug/lab2-crud: /home/tfy17jfo/Documents/5dv202-labs/lab2/lab2-crud/src/main.rs /home/tfy17jfo/Documents/5dv202-labs/lab2/lab2-crud/src/model.rs
