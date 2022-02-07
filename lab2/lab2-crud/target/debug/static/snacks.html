@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block header %}
+
+{% endblock %}
+
+{% block content %}
+  <h4>Current snacks:</h4>
+  <table>
+    <thead>
+      <th>Snack name</th>
+      <th>Amount</th>
+      <th>price</th>
+    </thead>
+    <tbody>
+      {% for snack in snacks %}
+        <tr>
+          <td>{{snack.name}}</td>
+          <td>{{snack.amount}}</td>
+          <td>{{snack.price}}</td>
+        </tr>
+      {% endfor %} 
+    </tbody>
+  </table>
+  <h4>Add/Update a snack:</h4>
+  <form method="POST">
+    <label>Snack name:</label>
+    <input type="text" name="snack_name">
+
+    <label>Amount:</label>
+    <input type="number" name="amount">
+
+    <label>Price:</label>
+    <input type="number" name="price">
+
+    <button>Add/Update</button>
+  </form>
+  <h4>Remove a snack:</h4>
+  <form method="POST" action="/snacks/delete">
+    <label>Snack to eat:</label>
+    <input type="text" name="snack_name">
+
+    <button>Del-eat!</button>
+  </form>
+{% endblock %}

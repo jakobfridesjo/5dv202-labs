@@ -1,0 +1,12 @@
+/home/tfy17jfo/Documents/5dv202-labs/lab2/lab2-crud/target/debug/deps/cookie-98afcddba388d6ea.rmeta: /home/tfy17jfo/.cargo/registry/src/github.com-1ecc6299db9ec823/cookie-0.11.4/src/lib.rs /home/tfy17jfo/.cargo/registry/src/github.com-1ecc6299db9ec823/cookie-0.11.4/src/builder.rs /home/tfy17jfo/.cargo/registry/src/github.com-1ecc6299db9ec823/cookie-0.11.4/src/parse.rs /home/tfy17jfo/.cargo/registry/src/github.com-1ecc6299db9ec823/cookie-0.11.4/src/jar.rs /home/tfy17jfo/.cargo/registry/src/github.com-1ecc6299db9ec823/cookie-0.11.4/src/delta.rs /home/tfy17jfo/.cargo/registry/src/github.com-1ecc6299db9ec823/cookie-0.11.4/src/draft.rs
+
+/home/tfy17jfo/Documents/5dv202-labs/lab2/lab2-crud/target/debug/deps/libcookie-98afcddba388d6ea.rlib: /home/tfy17jfo/.cargo/registry/src/github.com-1ecc6299db9ec823/cookie-0.11.4/src/lib.rs /home/tfy17jfo/.cargo/registry/src/github.com-1ecc6299db9ec823/cookie-0.11.4/src/builder.rs /home/tfy17jfo/.cargo/registry/src/github.com-1ecc6299db9ec823/cookie-0.11.4/src/parse.rs /home/tfy17jfo/.cargo/registry/src/github.com-1ecc6299db9ec823/cookie-0.11.4/src/jar.rs /home/tfy17jfo/.cargo/registry/src/github.com-1ecc6299db9ec823/cookie-0.11.4/src/delta.rs /home/tfy17jfo/.cargo/registry/src/github.com-1ecc6299db9ec823/cookie-0.11.4/src/draft.rs
+
+/home/tfy17jfo/Documents/5dv202-labs/lab2/lab2-crud/target/debug/deps/cookie-98afcddba388d6ea.d: /home/tfy17jfo/.cargo/registry/src/github.com-1ecc6299db9ec823/cookie-0.11.4/src/lib.rs /home/tfy17jfo/.cargo/registry/src/github.com-1ecc6299db9ec823/cookie-0.11.4/src/builder.rs /home/tfy17jfo/.cargo/registry/src/github.com-1ecc6299db9ec823/cookie-0.11.4/src/parse.rs /home/tfy17jfo/.cargo/registry/src/github.com-1ecc6299db9ec823/cookie-0.11.4/src/jar.rs /home/tfy17jfo/.cargo/registry/src/github.com-1ecc6299db9ec823/cookie-0.11.4/src/delta.rs /home/tfy17jfo/.cargo/registry/src/github.com-1ecc6299db9ec823/cookie-0.11.4/src/draft.rs
+
+/home/tfy17jfo/.cargo/registry/src/github.com-1ecc6299db9ec823/cookie-0.11.4/src/lib.rs:
+/home/tfy17jfo/.cargo/registry/src/github.com-1ecc6299db9ec823/cookie-0.11.4/src/builder.rs:
+/home/tfy17jfo/.cargo/registry/src/github.com-1ecc6299db9ec823/cookie-0.11.4/src/parse.rs:
+/home/tfy17jfo/.cargo/registry/src/github.com-1ecc6299db9ec823/cookie-0.11.4/src/jar.rs:
+/home/tfy17jfo/.cargo/registry/src/github.com-1ecc6299db9ec823/cookie-0.11.4/src/delta.rs:
+/home/tfy17jfo/.cargo/registry/src/github.com-1ecc6299db9ec823/cookie-0.11.4/src/draft.rs:

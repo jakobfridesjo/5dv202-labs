@@ -1,0 +1,21 @@
+<!doctype html>
+<title>{% block title %}{% endblock %} - Flask test</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<nav>
+  <h1>Pages</h1>
+  <ul>
+      <li><a href="/">Index</a>
+      <li><a href="/snacks">Snacks</a>
+  </ul>
+</nav>
+<style>
+
+/* Give tables borders */
+table, th, td {
+    border: 1px solid black;
+}
+
+</style>
+<section class="content">
+  {% block content %}{% endblock %}
+</section>
