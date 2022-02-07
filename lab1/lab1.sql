@@ -246,6 +246,20 @@ SELECT 'Query 10'; -- Do not remove
         Note: You must use recursion.
  */
 
-SELECT products.product_name FROM products,orders WHERE products.product_id=orders.order_id;
+WITH RECURSIVE R(frm,to)
+AS (
+    SELECT frm,to FROM E)
+    UNION ALL
+    SELECT 
+        E.frm, 
+        R.to
+    FROM 
+        R, E
+    WHERE R.to = E.from
+)
+SELECT 
+    to
+FROM 
+    products WHERE producs.product_name = 'Sugar';
 
 SELECT 'END'; -- Do not remove
