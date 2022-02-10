@@ -1,11 +1,10 @@
 <!doctype html>
-<title>{% block title %}{% endblock %} - Test page</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<title>{% block title %}{% endblock %} - Flask test</title>
 <nav>
   <h1>Pages</h1>
   <ul>
       <li><a href="/">Index</a>
-      <li><a href="/media">Media</a>
+      <li><a href="/snacks">Snacks</a>
   </ul>
 </nav>
 <style>
