@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-  <h4>Current snacks:</h4>
+  <h4>Current media:</h4>
   <table>
     <thead>
       <th>Name</th>
@@ -24,7 +24,7 @@
       {% endfor %} 
     </tbody>
   </table>
-  <h4>Add/Update a snack:</h4>
+  <h4>Add/Update media:</h4>
   <form method="POST">
     <label>Name:</label>
     <input type="text" name="name">
@@ -52,7 +52,7 @@
 id, media_name,first_name,last_name
 
 {% block content %}
-  <h4>Current snacks:</h4>
+  <h4>Current actors</h4>
   <table>
     <thead>
       <th>Media name</th>
@@ -72,7 +72,7 @@ id, media_name,first_name,last_name
       {% endfor %} 
     </tbody>
   </table>
-  <h4>Add/Update a participant:</h4>
+  <h4>Add/Update a actor:</h4>
   <form method="POST">
     <label>Media name:</label>
     <input type="text" name="name">
@@ -88,9 +88,9 @@ id, media_name,first_name,last_name
 
     <button>Add/Update</button>
   </form>
-  <h4>Remove participant:</h4>
+  <h4>Remove actor:</h4>
   <form method="POST" action="/participant/delete">
-    <label>Participant to remove:</label>
+    <label>Actor to remove:</label>
     <input type="text" name="name">
 
     <button>Remove!</button>
