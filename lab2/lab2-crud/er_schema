@@ -1,0 +1,5 @@
+ER - Schema
+
+Media(id, name, genre, year, score)
+Participants(id, media_id,first_name,last_name)
+Role(participant_id,media_id)

@@ -14,7 +14,9 @@
 
 SELECT 'Query 0'; -- Do not remove
 -- Select the product names of all products
-SELECT product_name FROM products;
+SELECT 
+    product_name 
+FROM products;
 
 SELECT 'END'; -- Do not remove
 
@@ -23,8 +25,13 @@ SELECT 'Query 1'; -- Do not remove
     Select the product names and unit prices of all products supplied by 
     supplier 'Tokyo Traders'.
 */
-SELECT products.product_name, products.unit_price 
-FROM products, suppliers WHERE products.supplier_id=suppliers.supplier_id AND suppliers.company_name='Tokyo Traders';
+SELECT 
+    products.product_name, products.unit_price 
+FROM 
+    products, suppliers
+WHERE 
+    products.supplier_id=suppliers.supplier_id 
+    AND suppliers.company_name='Tokyo Traders';
 
 SELECT 'END'; -- Do not remove
 
@@ -35,11 +42,20 @@ SELECT 'Query 2'; -- Do not remove
     products supplied by suppliers based in 'Australia', 'Canada' or 'France'.
     NOTE: You are not allowed to use the 'OR' keyword.
 */
-SELECT products.product_name, categories.category_name, products.units_in_stock
-FROM products
-INNER JOIN suppliers
-ON products.supplier_id=suppliers.supplier_id AND suppliers.country IN ('Australia','Canada','France') 
-INNER JOIN categories ON products.category_id=categories.category_id;
+SELECT 
+    products.product_name, categories.category_name, products.units_in_stock
+FROM 
+    products
+INNER JOIN 
+    suppliers
+    ON 
+        products.supplier_id=suppliers.supplier_id 
+        AND suppliers.country 
+    IN ('Australia','Canada','France') 
+INNER JOIN 
+    categories 
+    ON 
+        products.category_id=categories.category_id;
 
 SELECT 'END'; -- Do not remove
 
@@ -50,13 +66,23 @@ SELECT 'Query 3'; -- Do not remove
    by the country of 'USA', that are not of the category 'Beverages', 
    ordered by the units on order descending.
 */ 
-SELECT products.product_name, products.units_on_order
-FROM products
-INNER JOIN suppliers
-ON products.supplier_id=suppliers.supplier_id AND suppliers.country = 'USA' 
-INNER JOIN categories 
-ON products.category_id=categories.category_id AND NOT categories.category_name='Beverages' 
-ORDER BY products.units_on_order DESC;
+SELECT 
+    products.product_name, products.units_on_order
+FROM 
+    products
+INNER JOIN 
+    suppliers
+    ON 
+        products.supplier_id=suppliers.supplier_id 
+        AND suppliers.country = 'USA' 
+INNER JOIN 
+    categories 
+    ON 
+        products.category_id=categories.category_id 
+        AND NOT categories.category_name='Beverages' 
+ORDER BY 
+    products.units_on_order 
+DESC;
 
 
 SELECT 'END'; -- Do not remove
@@ -67,9 +93,12 @@ SELECT 'Query 4'; -- Do not remove
     Select the first names of the 5 youngest employees at the time of hire,
     ordered by their age at the time in ascending order.
 */
-SELECT employees.first_name
-FROM employees 
-ORDER BY employees.birth_date 
+SELECT
+    employees.first_name
+FROM
+    employees 
+ORDER BY
+    employees.birth_date 
 DESC 
 LIMIT 5;
 
@@ -82,12 +111,18 @@ SELECT 'Query 5'; -- Do not remove
     name, grouped by shipper and ordered by the number of orders for 
     each shipper in descending order.
 */
-SELECT COUNT(*), shippers.company_name 
-FROM orders 
-INNER JOIN shippers 
-ON orders.ship_via=shippers.shipper_id 
-GROUP BY shippers.shipper_id 
-ORDER BY COUNT(*) DESC;
+SELECT 
+    COUNT(*), shippers.company_name 
+FROM 
+    orders 
+INNER JOIN 
+    shippers 
+    ON 
+        orders.ship_via=shippers.shipper_id 
+GROUP BY 
+    shippers.shipper_id 
+ORDER BY 
+    COUNT(*) DESC;
 
 SELECT 'END'; -- Do not remove
 
@@ -97,7 +132,29 @@ SELECT 'Query 6'; -- Do not remove
     Select the first name of employees that has never had an order made during 
     the months of November or December shipped later than the required date.
 */
-SELECT employees.first_name FROM employees WHERE employees.first_name NOT IN (SELECT employees.first_name FROM employees WHERE employees.employee_id IN (SELECT orders.employee_id FROM orders WHERE ((EXTRACT(MONTH FROM orders.order_date) = 12) OR (EXTRACT(MONTH FROM orders.order_date) = 11)) AND orders.shipped_date > orders.required_date));
+SELECT 
+    employees.first_name
+FROM 
+    employees 
+WHERE 
+    employees.first_name 
+    NOT IN 
+        (SELECT 
+            employees.first_name 
+        FROM 
+            employees 
+        WHERE 
+            employees.employee_id 
+            IN 
+                (SELECT 
+                    orders.employee_id 
+                FROM 
+                    orders
+                WHERE 
+                    ((EXTRACT(MONTH FROM orders.order_date) = 12) 
+                    OR (EXTRACT(MONTH FROM orders.order_date) = 11)) 
+                    AND orders.shipped_date > orders.required_date)
+        );
 
 SELECT 'END'; -- Do not remove
 
@@ -109,7 +166,36 @@ SELECT 'Query 7'; -- Do not remove
     product and ipoh coffee ('Ipoh Coffee' should not be included in the 
     answer). There should be no repeats of product names in your answer.
 */
-SELECT product_name FROM products WHERE product_name!='Ipoh Coffee' AND product_id IN (SELECT product_id FROM order_details WHERE order_id IN (SELECT order_id from order_details WHERE product_id IN (SELECT product_id FROM products WHERE product_name='Ipoh Coffee')));
+SELECT 
+    product_name 
+    FROM 
+        products 
+    WHERE 
+        product_name!='Ipoh Coffee' 
+        AND product_id 
+        IN (
+            SELECT 
+                product_id 
+            FROM   
+                order_details
+            WHERE order_id 
+            IN (
+                SELECT 
+                    order_id 
+                FROM 
+                    order_details 
+                WHERE 
+                    product_id 
+                IN (
+                    SELECT 
+                        product_id 
+                    FROM 
+                        products 
+                    WHERE 
+                        product_name='Ipoh Coffee'
+                )
+            )
+        );
 
 SELECT 'END'; -- Do not remove
 
@@ -133,34 +219,34 @@ SELECT 'Query 8'; -- Do not remove
     | Alice Svensson                     | Torstein Employed                    | 200               |
 */
 
-/*
-SELECT CONCAT(managers.first_name, ' ', managers.last_name), CONCAT(employees.first_name, ' ', employees.last_name), 
-ROUND(SUM(order_details.unit_price*order_details.quantity*(1-order_details.discount))) 
-FROM orders,order_details,employees, employees AS managers 
-WHERE managers.employee_id=employees.reports_to AND employees.employee_id=orders.employee_id 
-AND order_details.order_id=orders.order_id 
-AND EXTRACT(YEAR FROM orders.order_date)=1996 
-AND orders.employee_id IN (SELECT employee_id FROM employees 
-WHERE reports_to=(SELECT employee_id FROM employees 
-WHERE title LIKE '%Manager%'))
-GROUP BY managers.first_name, managers.last_name, employees.first_name, employees.last_name
-ORDER BY ROUND(SUM(unit_price*quantity*(1-discount))) 
-DESC;
-*/
-
-SELECT 
-CONCAT(managers.first_name, ' ', managers.last_name), 
-CONCAT(employees.first_name, ' ', employees.last_name),
-ROUND(SUM(unit_price*quantity*(1-discount)))
-FROM orders,order_details,employees, employees AS managers
-WHERE managers.employee_id=employees.reports_to 
-AND employees.employee_id=orders.employee_id
-AND order_details.order_id=orders.order_id
-AND EXTRACT(YEAR FROM orders.order_date)=1996
-AND orders.employee_id=employees.employee_id
-GROUP BY managers.first_name, managers.last_name, employees.first_name, employees.last_name
-ORDER BY ROUND(SUM(unit_price*quantity*(1-discount))) 
-DESC;
+SELECT m_name,e_name,rev FROM ((SELECT 
+    CONCAT(managers.first_name, ' ', managers.last_name) AS m_name, 
+    CONCAT(employees.first_name, ' ', employees.last_name) AS e_name,
+    FLOOR(SUM(unit_price*quantity*(1-discount))) AS rev
+FROM 
+    orders,order_details,employees, employees AS managers
+WHERE 
+    managers.employee_id=employees.reports_to
+    AND employees.employee_id=orders.employee_id
+    AND order_details.order_id=orders.order_id
+    AND EXTRACT(YEAR FROM orders.order_date)=1996
+GROUP BY 
+    managers.first_name, managers.last_name, employees.first_name, employees.last_name
+ORDER BY 
+    FLOOR(SUM(unit_price*quantity*(1-discount))) 
+DESC) AS a
+INNER JOIN
+(SELECT MAX(rev) FROM (SELECT 
+    employees.reports_to, employees.employee_id, FLOOR(SUM(unit_price*quantity*(1-discount))) AS rev
+FROM 
+    orders,order_details,employees
+WHERE 
+    employees.employee_id=orders.employee_id
+    AND order_details.order_id=orders.order_id
+    AND EXTRACT(YEAR FROM orders.order_date)=1996
+GROUP BY 
+    employees.employee_id,employees.reports_to) AS r GROUP BY reports_to) AS b
+ON a.rev=b.max);
 
 SELECT 'END'; -- Do not remove
 
@@ -172,11 +258,17 @@ SELECT 'Query 9'; -- Do not remove
     handled by each of the employees. I.E. all employees has been responsible
     for at least one order made by the customer.
 */
-SELECT customers.company_name 
-FROM customers, orders, employees 
-WHERE customers.customer_id=orders.customer_id 
-GROUP BY customers.company_name 
-HAVING COUNT(DISTINCT orders.employee_id)=COUNT(DISTINCT employees.employee_id);
+SELECT 
+    customers.company_name 
+FROM 
+    customers, orders, employees 
+WHERE 
+    customers.customer_id=orders.customer_id 
+GROUP BY 
+    customers.company_name 
+HAVING 
+    COUNT(DISTINCT orders.employee_id) = 
+    COUNT(DISTINCT employees.employee_id);
 
 SELECT 'END'; -- Do not remove
 
@@ -194,9 +286,16 @@ SELECT 'Query 10'; -- Do not remove
 
     Note: Orders and producs below are part of your database state.
 
-    Orders:
-        Order 1:
-            Apples
+            Candy
+            Sugar
+        Order 5:
+            Gingerbread
+            Sugar
+
+    Related products:
+        Apples -> (Pears, Cheese)
+            Apples -> Pears
+                Pears -> Cheese
             Pears
         Order 2:
             Pears
@@ -246,20 +345,29 @@ SELECT 'Query 10'; -- Do not remove
         Note: You must use recursion.
  */
 
-WITH RECURSIVE R(frm,to)
-AS (
-    SELECT frm,to FROM E)
-    UNION ALL
-    SELECT 
-        E.frm, 
-        R.to
-    FROM 
-        R, E
-    WHERE R.to = E.from
-)
-SELECT 
-    to
-FROM 
-    products WHERE producs.product_name = 'Sugar';
+SELECT product_name FROM products WHERE product_id IN (
+    WITH RECURSIVE R AS (
+            (
+                SELECT order_id,product_id
+                FROM order_details
+                WHERE
+                product_id IN (
+                    SELECT product_id FROM products WHERE product_name='Sugar'
+                )
+            )
+            UNION 
+            (
+                SELECT related.order_id, related.product_id
+                FROM order_details AS related
+                JOIN R ON 
+                    (R.product_id = related.product_id) OR 
+                    (R.order_id = related.order_id)
+            ) 
+    )
+    SELECT DISTINCT R.product_id
+    FROM R WHERE R.product_id NOT IN (
+        SELECT product_id FROM products WHERE product_name='Sugar'
+    )
+);
 
 SELECT 'END'; -- Do not remove
