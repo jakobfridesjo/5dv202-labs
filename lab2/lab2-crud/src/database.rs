@@ -1,6 +1,17 @@
-// Postgres
+/**
+ * Description: To be used for communicating with postgresql
+ * 
+ * Author: Jakob Fridesjö
+ * Date: 2022-02-11
+ */
+
 use postgres::{error::Error, Client, NoTls};
 
+mod model;
+
+/**
+ * Create postgresql connection
+ */
 fn db_create() -> Result<Client, Error> {
     let username = "postgres";
     let password = "postgres";
@@ -69,4 +80,75 @@ fn db_create() -> Result<Client, Error> {
     )?;
 
     Ok(client)
+}
+
+/**
+ * Get all snacks from database
+ */
+fn db_read(client: &mut Client) -> Result<Vec<Snack>, Error> {
+    let mut snacks = Vec::new();
+    for row in client.query(
+        "SELECT name,amount,price FROM snacks",
+        &[]
+    )? {
+        snacks.push(Snack {
+            name: row.get(0),
+            amount: row.get(1),
+            price: row.get(2),
+        });
+    }
+
+    Ok(snacks)
+}
+
+/**
+ * Update snack in database
+ */
+fn db_update(client: &mut Client) -> Result<Vec<Snack>, Error> {
+    let mut snacks = Vec::new();
+    for row in client.query(
+        "SELECT name,amount,price FROM snacks",
+        &[]
+    )? {
+        snacks.push(Snack {
+            name: row.get(0),
+            amount: row.get(1),
+            price: row.get(2),
+        });
+    }
+
+    Ok(snacks)
+}
+
+/**
+ * Insert snack into database
+ */
+fn db_insert(client: &mut Client, snack: Snack) -> Result<(), Error> {
+
+    client.execute(
+        "INSERT INTO snacks (name,amount,price) 
+        VALUES ($1 ,$2, $3)"
+        &[snack.name, snack.amount, snack.price]
+    )?;
+
+    Ok(())
+}
+
+/**
+ * Remove snack from database
+ */
+fn db_remove(client: &mut Client) -> Result<Vec<Snack>, Error> {
+    let mut snacks = Vec::new();
+    for row in client.query(
+        "SELECT name,amount,price FROM snacks",
+        &[]
+    )? {
+        snacks.push(Snack {
+            name: row.get(0),
+            amount: row.get(1),
+            price: row.get(2),
+        });
+    }
+
+    Ok(snacks)
 }
