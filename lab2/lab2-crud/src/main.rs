@@ -1,8 +1,9 @@
 mod model;
 
 #[macro_use] extern crate rocket;
+
+// Serving of page and files
 use rocket::fs::FileServer;
-//use rocket::fs::FileServer;
 use rocket_dyn_templates::Template;
 use serde::Serialize;
 
