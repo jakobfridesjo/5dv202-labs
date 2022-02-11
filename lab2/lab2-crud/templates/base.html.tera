@@ -1,6 +1,7 @@
 <!doctype html>
-<title>{% block title %}{% endblock %} - Flask test</title>
+<title>{% block title %}{% endblock %} Rocket test page </title>
 <nav>
+  <link rel="stylesheet" href="style.css" />
   <h1>Pages</h1>
   <ul>
       <li><a href="/">Index</a>

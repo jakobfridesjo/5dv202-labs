@@ -1,6 +1,7 @@
 mod model;
 
 #[macro_use] extern crate rocket;
+use rocket::fs::FileServer;
 //use rocket::fs::FileServer;
 use rocket_dyn_templates::Template;
 use serde::Serialize;
@@ -12,7 +13,9 @@ struct IndexContext<'a> {
 
 #[derive(Serialize)]
 struct SnacksContext<'a> {
-    bar: &'a str,
+    amount: i32,
+    price: i32,
+    name: &'a str,
 }
 
 #[post("/")]
@@ -38,7 +41,9 @@ fn delete() -> &'static str {
 #[get("/snacks")]
 fn snacks() -> Template {
     Template::render("snacks", SnacksContext {
-        bar: "Hello World!",
+        amount: 0,
+        price: 0,
+        name: "Hello World!",
     })
 }
 
@@ -52,6 +57,7 @@ fn index() -> Template {
 #[launch]
 fn rocket() -> _ {
     rocket::build()
+        .mount("/", FileServer::from("static/"))
         .mount("/", routes![index,snacks])
         .attach(Template::fairing())
 }

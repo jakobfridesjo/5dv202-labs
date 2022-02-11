@@ -13,13 +13,13 @@
       <th>price</th>
     </thead>
     <tbody>
-      {% for snack in snacks %}
-        <tr>
-          <td>{{snack.name}}</td>
-          <td>{{snack.amount}}</td>
-          <td>{{snack.price}}</td>
-        </tr>
-      {% endfor %} 
+      
+
+
+
+
+
+      
     </tbody>
   </table>
   <h4>Add/Update a snack:</h4>
