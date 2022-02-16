@@ -1,10 +1,11 @@
-mod model;
-
 #[macro_use] extern crate rocket;
 
-// Serving of page and files
+mod model;
+//mod database; Not ready yet
+
+use rocket::response::Redirect;
+use rocket_dyn_templates::{Template, tera::Tera, context};
 use rocket::fs::FileServer;
-use rocket_dyn_templates::Template;
 use serde::Serialize;
 
 #[derive(Serialize)]
@@ -13,10 +14,10 @@ struct IndexContext<'a> {
 }
 
 #[derive(Serialize)]
-struct SnacksContext<'a> {
+struct SnacksContext {
+    name: &'static str,
     amount: i32,
     price: i32,
-    name: &'a str,
 }
 
 #[post("/")]
@@ -39,12 +40,13 @@ fn delete() -> &'static str {
     "Hello, world!"
 }
 
+
 #[get("/snacks")]
 fn snacks() -> Template {
-    Template::render("snacks", SnacksContext {
+    Template::render("snacks", context! {
+        name: "Hello World!",
         amount: 0,
         price: 0,
-        name: "Hello World!",
     })
 }
 

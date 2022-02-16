@@ -105,19 +105,14 @@ fn db_read(client: &mut Client) -> Result<Vec<Snack>, Error> {
  * Update snack in database
  */
 fn db_update(client: &mut Client) -> Result<Vec<Snack>, Error> {
-    let mut snacks = Vec::new();
-    for row in client.query(
-        "SELECT name,amount,price FROM snacks",
+    client.execute(
+        "UPDATE snacks
+         SET col = val0
+         WHERE name = val1",
         &[]
-    )? {
-        snacks.push(Snack {
-            name: row.get(0),
-            amount: row.get(1),
-            price: row.get(2),
-        });
-    }
+    )?;
 
-    Ok(snacks)
+    Ok(())
 }
 
 /**
@@ -127,7 +122,7 @@ fn db_insert(client: &mut Client, snack: Snack) -> Result<(), Error> {
 
     client.execute(
         "INSERT INTO snacks (name,amount,price) 
-        VALUES ($1 ,$2, $3)"
+        VALUES ($1 ,$2, $3)",
         &[snack.name, snack.amount, snack.price]
     )?;
 
@@ -137,18 +132,13 @@ fn db_insert(client: &mut Client, snack: Snack) -> Result<(), Error> {
 /**
  * Remove snack from database
  */
-fn db_remove(client: &mut Client) -> Result<Vec<Snack>, Error> {
-    let mut snacks = Vec::new();
-    for row in client.query(
-        "SELECT name,amount,price FROM snacks",
-        &[]
-    )? {
-        snacks.push(Snack {
-            name: row.get(0),
-            amount: row.get(1),
-            price: row.get(2),
-        });
-    }
+fn db_remove(client: &mut Client, snack: Snack) -> Result<(), Error> {
 
-    Ok(snacks)
+    client.execute(
+        "DELETE FROM snacks WHERE name= 
+        VALUES $1",
+        &[snack.name]
+    )?;
+
+    Ok(())
 }
