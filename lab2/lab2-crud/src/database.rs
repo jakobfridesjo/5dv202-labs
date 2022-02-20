@@ -5,9 +5,10 @@
  * Date: 2022-02-11
  */
 
+use crate::preset::Preset
 use postgres::{error::Error, Client, NoTls};
 
-mod model;
+//mod model;
 
 /**
  * Create postgresql connection

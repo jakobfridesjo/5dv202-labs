@@ -1,37 +1,14 @@
 #[macro_use] extern crate rocket;
 
+use model::Snack;
+use model::SnacksContext;
+use model::IndexContext;
 mod model;
-//mod database; Not ready yet
+//mod database;
 
-use std::collections::HashMap;
-use rocket::response::Redirect;
 use rocket_dyn_templates::Template;
 use rocket::fs::FileServer;
 use serde::Serialize;
-
-#[derive(Serialize)]
-struct IndexContext<'a> {
-    bar: &'a str,
-}
-
-#[derive(Serialize)]
-struct SnacksContext {
-    name: &'static str,
-    amount: i32,
-    price: i32,
-}
-
-#[derive(Serialize)]
-struct TemplateContext {
-    snacks: Vec<Snack>
-}
-
-#[derive(Serialize)]
-struct Snack {
-    name: &'static str,
-    amount: i32,
-    price: i32,
-}
 
 #[post("/")]
 fn create() -> &'static str {
@@ -72,7 +49,7 @@ fn snacks() -> Template {
         price: 20,
     };
 
-    let context = TemplateContext { snacks: vec![snack0, snack1, snack2]};
+    let context = SnacksContext { snacks: vec![snack0, snack1, snack2]};
     Template::render("snacks", &context)
 }
 
