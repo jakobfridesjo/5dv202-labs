@@ -5,8 +5,8 @@
  * Date: 2022-02-11
  */
 
-use crate::preset::Preset
 use postgres::{error::Error, Client, NoTls};
+use crate::Media;
 
 //mod model;
 
@@ -49,7 +49,6 @@ fn db_create() -> Result<Client, Error> {
             media_id INT GENERATED ALWAYS AS IDENTITY,
             media_name VARCHAR(255) NOT NULL,
             genre VARCHAR(255) NOT NULL,
-            year DATE NOT NULL,
             score FLOAT,
             PRIMARY KEY(media_id)
         );
@@ -84,30 +83,31 @@ fn db_create() -> Result<Client, Error> {
 }
 
 /**
- * Get all snacks from database
+ * Get all medias from database
  */
-fn db_read(client: &mut Client) -> Result<Vec<Snack>, Error> {
-    let mut snacks = Vec::new();
+fn db_get_all_medias(client: &mut Client) -> Result<Vec<Media>, Error> {
+    let mut medias = Vec::new();
     for row in client.query(
-        "SELECT name,amount,price FROM snacks",
+        "SELECT name,genre,year,score FROM Media",
         &[]
     )? {
-        snacks.push(Snack {
+        medias.push(Media {
             name: row.get(0),
-            amount: row.get(1),
-            price: row.get(2),
+            genre: row.get(1),
+            year: row.get(2),
+            score: row.get(3),
         });
     }
 
-    Ok(snacks)
+    Ok(medias)
 }
 
 /**
- * Update snack in database
+ * Update media in database
  */
-fn db_update(client: &mut Client) -> Result<Vec<Snack>, Error> {
+fn db_update(client: &mut Client) -> Result<(), Error> {
     client.execute(
-        "UPDATE snacks
+        "UPDATE medias
          SET col = val0
          WHERE name = val1",
         &[]
@@ -117,28 +117,28 @@ fn db_update(client: &mut Client) -> Result<Vec<Snack>, Error> {
 }
 
 /**
- * Insert snack into database
+ * Insert media into database
  */
-fn db_insert(client: &mut Client, snack: Snack) -> Result<(), Error> {
+fn db_insert(client: &mut Client, media: Media) -> Result<(), Error> {
 
     client.execute(
-        "INSERT INTO snacks (name,amount,price) 
-        VALUES ($1 ,$2, $3)",
-        &[snack.name, snack.amount, snack.price]
+        "INSERT INTO Media (name,genre,year,score) 
+        VALUES ($1 ,$2, $3, $4)",
+        [media.score, media.genre, media.year, media.score]
     )?;
 
     Ok(())
 }
 
 /**
- * Remove snack from database
+ * Remove media from database
  */
-fn db_remove(client: &mut Client, snack: Snack) -> Result<(), Error> {
+fn db_remove(client: &mut Client, media: Media) -> Result<(), Error> {
 
     client.execute(
-        "DELETE FROM snacks WHERE name= 
-        VALUES $1",
-        &[snack.name]
+        "DELETE FROM Media WHERE name= 
+        VALUES $1 AND year",
+        [media.name, media.year] 
     )?;
 
     Ok(())

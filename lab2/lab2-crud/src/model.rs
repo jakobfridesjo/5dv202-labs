@@ -6,13 +6,14 @@ pub struct IndexContext<'a> {
 }
 
 #[derive(Serialize)]
-pub struct SnacksContext {
-    pub snacks: Vec<Snack>
+pub struct MediaContext {
+    pub medias: Vec<Media>
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct Snack {
+pub struct Media {
     pub name: &'static str,
-    pub amount: i32,
-    pub price: i32,
+    pub genre: &'static str,
+    pub year: i32,
+    pub score: i32,
 }

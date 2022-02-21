@@ -1,0 +1,50 @@
+{% extends "base" %}
+
+{% block header %}
+
+{% endblock %}
+
+{% block content %}
+  <h4>Current snacks:</h4>
+  <table>
+    <thead>
+      <th>Name</th>
+      <th>Genre</th>
+      <th>Year</th>
+      <th>Score</th>
+    </thead>
+    <tbody>
+      {% for media in medias %}
+        <tr>
+          <td>{{media.name}}</td>
+          <td>{{media.genre}}</td>
+          <td>{{media.year}}</td>
+          <td>{{media.score}}</td>
+        </tr>
+      {% endfor %} 
+    </tbody>
+  </table>
+  <h4>Add/Update a media:</h4>
+  <form method="POST">
+    <label>Name:</label>
+    <input type="text" name="media_name">
+
+    <label>Genre:</label>
+    <input type="text" name="media_genre">
+
+    <label>Year:</label>
+    <input type="number" name="media_year">
+
+    <label>Score:</label>
+    <input type="number" name="media_score">
+
+    <button>Add/Update</button>
+  </form>
+  <h4>Remove a media:</h4>
+  <form method="POST" action="/medias/delete">
+    <label>Media to remove:</label>
+    <input type="text" name="media_name">
+
+    <button>Delete!</button>
+  </form>
+{% endblock %}
