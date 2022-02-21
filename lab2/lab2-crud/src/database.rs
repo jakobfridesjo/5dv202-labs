@@ -86,17 +86,20 @@ fn db_create() -> Result<Client, Error> {
  * Get all medias from database
  */
 fn db_get_all_medias(client: &mut Client) -> Result<Vec<Media>, Error> {
-    let mut medias = Vec::new();
+    let mut medias: Vec<Media> = Vec::new();
     for row in client.query(
-        "SELECT name,genre,year,score FROM Media",
-        &[]
-    )? {
-        medias.push(Media {
-            name: row.get(0),
-            genre: row.get(1),
-            year: row.get(2),
-            score: row.get(3),
-        });
+        "SELECT name,genre,year,score FROM Media", &[])? {
+        let name: &str = row.get(0);
+        let genre: &str = row.get(1);
+        let year: i32 = row.get(2);
+        let score: i32 = row.get(3);
+        
+        /*medias.push(Media {
+            name: name,
+            genre: genre,
+            year: year,
+            score: score,
+        });*/
     }
 
     Ok(medias)
@@ -124,7 +127,7 @@ fn db_insert(client: &mut Client, media: Media) -> Result<(), Error> {
     client.execute(
         "INSERT INTO Media (name,genre,year,score) 
         VALUES ($1 ,$2, $3, $4)",
-        [media.score, media.genre, media.year, media.score]
+        &[&media.score, &media.genre, &media.year, &media.score]
     )?;
 
     Ok(())
@@ -138,7 +141,7 @@ fn db_remove(client: &mut Client, media: Media) -> Result<(), Error> {
     client.execute(
         "DELETE FROM Media WHERE name= 
         VALUES $1 AND year",
-        [media.name, media.year] 
+        &[&media.name, &media.year] 
     )?;
 
     Ok(())
