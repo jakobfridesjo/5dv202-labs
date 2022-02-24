@@ -14,7 +14,7 @@ use crate::Media;
 pub fn db_create() -> Result<Client, Error> {
     let username = "postgres";
     let password = "postgres";
-    let host = "127.0.0.1";
+    let host = "localhost";
     let port = "5432";
     let database = "rocketdb";
 

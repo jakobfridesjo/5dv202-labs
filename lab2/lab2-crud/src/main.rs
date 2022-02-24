@@ -16,31 +16,59 @@ use rocket_sync_db_pools::{database, postgres};
 #[database("psql_pool")]
 struct PsqlConn(postgres::Client);
 
-/*#[get("/logs/<id>")]
-async fn get_logs(conn: LogsDbConn, id: usize) -> Result<Logs> {
-    conn.run(|c| Logs::by_id(c, id)).await
-}*/
-
-#[post("/")]
-fn create() -> &'static str {
-    "Hello, world!"
+fn load_from_db(conn: &postgres::Client) -> Vec<Media> {
+    let media0 = Media {
+        name: "Yakuza 0".to_string(), 
+        genre: "Meme".to_string(),
+        year: 2016,
+        score: 100,
+    };
+    let media1 = Media {
+        name: "Yakuza Kiwami".to_string(), 
+        genre: "Meme".to_string(),
+        year: 2017,
+        score: 80,
+    };
+    let media2 = Media {
+        name: "Yakuza Kiwami 2".to_string(), 
+        genre: "Meme".to_string(),
+        year: 2018,
+        score: 90,
+    };
+    let medias = Vec::from([media0,media1,media2]);    // Do something with connection, return some data.
+    return medias
 }
 
-#[get("/")]
-fn read() -> &'static str {
-    "Hello, world!"
-}
+#[get("/medias")]
+async fn my_handler(conn: PsqlConn) -> Template {
+    conn.run(|c| load_from_db(c)).await;
 
-#[put("/")]
-fn update() -> &'static str {
-    "Hello, world!"
+        /* Insert some data into database */
+        let media0 = Media {
+            name: "Yakuza 0".to_string(), 
+            genre: "Meme".to_string(),
+            year: 2016,
+            score: 100,
+        };
+        let media1 = Media {
+            name: "Yakuza Kiwami".to_string(), 
+            genre: "Meme".to_string(),
+            year: 2017,
+            score: 80,
+        };
+        let media2 = Media {
+            name: "Yakuza Kiwami 2".to_string(), 
+            genre: "Meme".to_string(),
+            year: 2018,
+            score: 90,
+        };
+    
+        /* Get information from database */
+        //let medias: Vec<Media> = db_get_all_medias().unwrap();
+        
+        let context = MediaContext { medias: vec![media0,media1,media2] };
+        Template::render("medias", &context)
 }
-
-#[delete("/")]
-fn delete() -> &'static str {
-    "Hello, world!"
-}
-
 
 #[get("/medias")]
 fn medias() -> Template {
@@ -63,8 +91,11 @@ fn medias() -> Template {
         year: 2018,
         score: 90,
     };
+
+    /* Get information from database */
+    //let medias: Vec<Media> = db_get_all_medias().unwrap();
     
-    let context = MediaContext { medias: vec![media0, media1, media2]};
+    let context = MediaContext { medias: vec![media0,media1,media2] };
     Template::render("medias", &context)
 }
 
@@ -79,7 +110,7 @@ fn index() -> Template {
 fn rocket() -> _ {
     
     /* Create database */
-    /*let mut client = Client::connect("host=localhost user=postgres", NoTls);
+
 
     /* Insert some data into database */
     let media0 = Media {
@@ -100,7 +131,6 @@ fn rocket() -> _ {
         year: 2018,
         score: 90,
     };
-    */
 
 
     /* Launch rocket! */

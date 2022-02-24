@@ -1,16 +1,16 @@
 use serde::{Serialize, Deserialize};
 
-#[derive(Serialize)]
+#[derive(Serialize, Debug)]
 pub struct IndexContext<String> {
     pub bar: String,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Debug)]
 pub struct MediaContext {
     pub medias: Vec<Media>
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Media {
     pub name: String,
     pub genre: String,
