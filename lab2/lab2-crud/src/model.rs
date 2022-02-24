@@ -1,8 +1,8 @@
 use serde::{Serialize, Deserialize};
 
 #[derive(Serialize)]
-pub struct IndexContext<'a> {
-    pub bar: &'a str,
+pub struct IndexContext<String> {
+    pub bar: String,
 }
 
 #[derive(Serialize)]
@@ -12,8 +12,8 @@ pub struct MediaContext {
 
 #[derive(Serialize, Deserialize)]
 pub struct Media {
-    pub name: &'static str,
-    pub genre: &'static str,
+    pub name: String,
+    pub genre: String,
     pub year: i32,
     pub score: i32,
 }

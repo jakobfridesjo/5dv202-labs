@@ -4,21 +4,19 @@
  * Author: Jakob Fridesjö
  * Date: 2022-02-11
  */
-
+extern crate postgres;
 use postgres::{error::Error, Client, NoTls};
 use crate::Media;
-
-//mod model;
 
 /**
  * Create postgresql connection
  */
-fn db_create() -> Result<Client, Error> {
+pub fn db_create() -> Result<Client, Error> {
     let username = "postgres";
     let password = "postgres";
-    let host = "postgres";
+    let host = "127.0.0.1";
     let port = "5432";
-    let database = "rustdb";
+    let database = "rocketdb";
 
     let conn_str = &format!(
         "postgres://{}{}{}@{}{}{}{}{}",
@@ -85,30 +83,24 @@ fn db_create() -> Result<Client, Error> {
 /**
  * Get all medias from database
  */
-fn db_get_all_medias(client: &mut Client) -> Result<Vec<Media>, Error> {
-    let mut medias: Vec<Media> = Vec::new();
+pub fn db_get_all_medias(client: &mut Client) -> Result<Vec<Media>, Error> {
+    let mut medias : Vec<Media> = Vec::new();
     for row in client.query(
         "SELECT name,genre,year,score FROM Media", &[])? {
-        let name: &str = row.get(0);
-        let genre: &str = row.get(1);
-        let year: i32 = row.get(2);
-        let score: i32 = row.get(3);
-        
-        /*medias.push(Media {
-            name: name,
-            genre: genre,
-            year: year,
-            score: score,
-        });*/
+        medias.push(Media {
+            name: row.get(0),
+            genre: row.get(1),
+            year: row.get(2),
+            score: row.get(3),
+        });
     }
-
     Ok(medias)
 }
 
 /**
  * Update media in database
  */
-fn db_update(client: &mut Client) -> Result<(), Error> {
+pub fn db_update(client: &mut Client) -> Result<(), Error> {
     client.execute(
         "UPDATE medias
          SET col = val0
@@ -122,7 +114,7 @@ fn db_update(client: &mut Client) -> Result<(), Error> {
 /**
  * Insert media into database
  */
-fn db_insert(client: &mut Client, media: Media) -> Result<(), Error> {
+pub fn db_insert(client: &mut Client, media: Media) -> Result<(), Error> {
 
     client.execute(
         "INSERT INTO Media (name,genre,year,score) 
