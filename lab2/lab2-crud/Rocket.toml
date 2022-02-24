@@ -1,2 +1,2 @@
 [global.databases.psql_pool]
-url = "postgres://postgres:postgres@localhost:5432"
+url = "postgres://postgres:postgres@localhost:5432/rocketdb"
