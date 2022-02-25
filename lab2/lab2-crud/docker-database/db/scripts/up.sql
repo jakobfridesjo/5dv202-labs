@@ -18,7 +18,7 @@ CREATE TABLE Media (
     media_name VARCHAR(255) NOT NULL,
     media_genre VARCHAR(255) NOT NULL,
     media_year INT NOT NULL,
-    media_score FLOAT NOT NULL,
+    media_score INT NOT NULL,
     PRIMARY KEY(media_id)
 );
 

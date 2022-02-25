@@ -12,93 +12,79 @@ use rocket_dyn_templates::Template;
 use rocket::fs::FileServer;
 use serde::Serialize;
 use rocket_sync_db_pools::{database, postgres};
+use postgres::error::Error;
 
 #[database("psql_pool")]
 struct PsqlConn(postgres::Client);
 
-fn load_from_db(conn: &postgres::Client) -> Vec<Media> {
-    let media0 = Media {
-        name: "Yakuza 0".to_string(), 
-        genre: "Meme".to_string(),
-        year: 2016,
-        score: 100,
-    };
-    let media1 = Media {
-        name: "Yakuza Kiwami".to_string(), 
-        genre: "Meme".to_string(),
-        year: 2017,
-        score: 80,
-    };
-    let media2 = Media {
-        name: "Yakuza Kiwami 2".to_string(), 
-        genre: "Meme".to_string(),
-        year: 2018,
-        score: 90,
-    };
-    let medias = Vec::from([media0,media1,media2]);    // Do something with connection, return some data.
-    return medias
+/**
+ * Loads all medias from database
+ */
+fn db_load_medias(conn: &mut postgres::Client) -> Result<Vec<Media>, Error> {
+    let mut medias : Vec<Media> = Vec::new();
+    for row in conn.query(
+        "SELECT media_name,media_genre,media_year,media_score FROM Media;", &[])? {
+        medias.push(Media {
+            name: row.get(0),
+            genre: row.get(1),
+            year: row.get(2),
+            score: row.get(3),
+        });
+    }
+    Ok(medias)
 }
 
-#[get("/medias")]
-async fn my_handler(conn: PsqlConn) -> Template {
-    conn.run(|c| load_from_db(c)).await;
+/**
+ * Inserts a media into database
+ */
+fn db_insert_medias(conn: &mut postgres::Client, medias: Vec<Media>) -> Result<(), Error> {
 
-        /* Insert some data into database */
-        let media0 = Media {
-            name: "Yakuza 0".to_string(), 
-            genre: "Meme".to_string(),
-            year: 2016,
-            score: 100,
-        };
-        let media1 = Media {
-            name: "Yakuza Kiwami".to_string(), 
-            genre: "Meme".to_string(),
-            year: 2017,
-            score: 80,
-        };
-        let media2 = Media {
-            name: "Yakuza Kiwami 2".to_string(), 
-            genre: "Meme".to_string(),
-            year: 2018,
-            score: 90,
-        };
-    
-        /* Get information from database */
-        //let medias: Vec<Media> = db_get_all_medias().unwrap();
-        
-        let context = MediaContext { medias: vec![media0,media1,media2] };
-        Template::render("medias", &context)
+    for media in medias {
+        println!("{}:{}:{}:{}", media.score, media.genre, media.year, media.score);
+        conn.execute(
+            "INSERT INTO Media (media_name,media_genre,media_year,media_score) 
+            VALUES ($1 ,$2, $3, $4);",
+            &[&media.score, &media.genre, &media.year, &media.score]
+        )?;
+    }
+
+    Ok(())
 }
 
-#[get("/medias")]
-fn medias() -> Template {
-    /* Insert some data into database */
-    let media0 = Media {
-        name: "Yakuza 0".to_string(), 
-        genre: "Meme".to_string(),
-        year: 2016,
-        score: 100,
-    };
-    let media1 = Media {
-        name: "Yakuza Kiwami".to_string(), 
-        genre: "Meme".to_string(),
-        year: 2017,
-        score: 80,
-    };
-    let media2 = Media {
-        name: "Yakuza Kiwami 2".to_string(), 
-        genre: "Meme".to_string(),
-        year: 2018,
-        score: 90,
-    };
+/**
+ * Deletes a media from database
+ */
+fn db_delete_media(conn: &mut postgres::Client, media_name: String) -> Result<(), Error> {
+    println!("{}", media_name);
+    conn.execute(
+        "DELETE FROM Media WHERE media_name=$1;",
+        &[&media_name] 
+    )?;
 
-    /* Get information from database */
-    //let medias: Vec<Media> = db_get_all_medias().unwrap();
-    
-    let context = MediaContext { medias: vec![media0,media1,media2] };
+    Ok(())
+}
+
+/**
+ * Deletes a media
+ */
+#[post("/medias/delete", data = "<media_name>")]
+async fn delete_media(conn: PsqlConn, media_name: String) {
+    conn.run(|c| db_delete_media(c, media_name)).await;
+}
+
+/**
+ * Renders the medias page
+ */
+#[get("/medias")]
+async fn medias(conn: PsqlConn) -> Template {
+    let medias_vec: Vec<Media> = conn.run(|c| db_load_medias(c)).await.unwrap();
+    let context = MediaContext {medias: medias_vec};
     Template::render("medias", &context)
 }
 
+/**
+ * Renders the index page
+ */
 #[get("/")]
 fn index() -> Template {
     Template::render("index", IndexContext {
@@ -109,34 +95,10 @@ fn index() -> Template {
 #[launch]
 fn rocket() -> _ {
     
-    /* Create database */
-
-
-    /* Insert some data into database */
-    let media0 = Media {
-        name: "Yakuza 0".to_string(), 
-        genre: "Meme".to_string(),
-        year: 2016,
-        score: 100,
-    };
-    let media1 = Media {
-        name: "Yakuza Kiwami".to_string(), 
-        genre: "Meme".to_string(),
-        year: 2017,
-        score: 80,
-    };
-    let media2 = Media {
-        name: "Yakuza Kiwami 2".to_string(), 
-        genre: "Meme".to_string(),
-        year: 2018,
-        score: 90,
-    };
-
-
     /* Launch rocket! */
     rocket::build()
-        .mount("/", FileServer::from("static/"))
-        .mount("/", routes![index,medias])
+        .mount("/", FileServer::from("static"))
+        .mount("/", routes![index,medias,delete_media])
         .attach(Template::fairing())
         .attach(PsqlConn::fairing())
 }

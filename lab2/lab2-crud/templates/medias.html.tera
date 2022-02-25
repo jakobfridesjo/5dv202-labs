@@ -42,9 +42,8 @@
   </form>
   <h4>Remove a media:</h4>
   <form method="POST" action="/medias/delete">
-    <label>Media to remove:</label>
+    <label>Name:</label>
     <input type="text" name="media_name">
-
     <button>Delete!</button>
   </form>
 {% endblock %}
