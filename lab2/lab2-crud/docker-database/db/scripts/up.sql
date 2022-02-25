@@ -16,9 +16,9 @@ DROP TABLE IF EXISTS Media;
 CREATE TABLE Media (
     media_id INT GENERATED ALWAYS AS IDENTITY,
     media_name VARCHAR(255) NOT NULL,
-    genre VARCHAR(255) NOT NULL,
-    year DATE NOT NULL,
-    score FLOAT,
+    media_genre VARCHAR(255) NOT NULL,
+    media_year INT NOT NULL,
+    media_score FLOAT NOT NULL,
     PRIMARY KEY(media_id)
 );
 
