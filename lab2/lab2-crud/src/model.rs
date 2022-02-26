@@ -10,10 +10,10 @@ pub struct MediaContext {
     pub medias: Vec<Media>
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, FromForm)]
 pub struct Media {
-    pub name: String,
-    pub genre: String,
-    pub year: i32,
-    pub score: i32,
+    pub media_name: String,
+    pub media_genre: String,
+    pub media_year: i32,
+    pub media_score: i32,
 }

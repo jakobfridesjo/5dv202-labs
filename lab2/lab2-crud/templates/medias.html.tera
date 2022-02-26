@@ -16,16 +16,16 @@
     <tbody>
       {% for media in medias %}
         <tr>
-          <td>{{media.name}}</td>
-          <td>{{media.genre}}</td>
-          <td>{{media.year}}</td>
-          <td>{{media.score}}</td>
+          <td>{{media.media_name}}</td>
+          <td>{{media.media_genre}}</td>
+          <td>{{media.media_year}}</td>
+          <td>{{media.media_score}}</td>
         </tr>
       {% endfor %} 
     </tbody>
   </table>
   <h4>Add/Update a media:</h4>
-  <form method="POST">
+  <form method="POST" action="/media/add">
     <label>Name:</label>
     <input type="text" name="media_name">
 
