@@ -1,30 +1,112 @@
-body{  
-  font-family: Helvetica, Arial, Sans-serif, serif;
+body {  
+  font-family: Arial, Helvetica, sans-serif, serif;
   font-size:15px;
-  color:#000;
-  background:rgb(237, 241, 255);
+  color:black;
+  background: #F5F5F6;
+}
+
+button {
+  color: black;
+  background: #80deea;
+  border: 1px solid #4bacb8;
+  padding: 4pt;
+}
+
+th, td {
+	padding: 6pt;
+}
+
+thead th {
+  width: 25%;
+  padding: 6pt;
+}
+
+table {
+  border-collapse: collapse;
+  border: 1px solid #4bacb8;
+  text-align: center;
+	vertical-align: middle;
+}
+
+fieldset {
+  width: 278px;
+  border: 1px solid #4bacb8;
+}
+
+fieldset p {
+  padding: 1pt;
+  clear: both;
+}
+
+label field {
+  text-align: right;
+  float: left;
+  font-weight: bold;
+}
+
+thead {
+	background-color: #424242;
+	color: white;
+	text-transform: uppercase;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #F5F5F6;
+}
+
+tbody tr:nth-child(even) {
+  background-color: white;
+}
+
+tbody th {
+  background-color: #80deea;
+  color: black;
+  text-align: left;
+}
+
+tbody tr:nth-child(even) th {
+  background-color: #b4ffff;
+}
+
+input {
+  color: black;
+  border: 1px solid #4bacb8;
+  background: white;
+  padding: 4pt;
+  float: right;
 }
 
 h1 {
-  font-size:30px;
+  font-size:40px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+h2 {
+  font-size:22px;
 }
 
 h3 {
-  font-size:22px;
+  font-size:12px;
 }
 
 #content-wrapper {
   width:960px;
   text-align:left;
-  margin:0 auto;
-  background:rgb(221, 221, 221);
-  padding:15px;
-   
+  margin: 0 auto;
+  background:#f8ffd7;
+  padding:15px;  
 }
 
-#header{
-  width:960px;
-  height:120px;
+header {
+  background: #424242;
+  color: white;
+  width: 100%;
+  text-align: center;
+  vertical-align: middle;
+  padding: 6pt;
 }
 
 #post-content {
@@ -35,15 +117,18 @@ h3 {
 
 .sidebar{
   float:left;
-  width:300px;
+  width:250px;
+  height: 100%;
   margin:0 0 0 15px;
   font-size:15px;
   list-style:none;
+  background: #80deea;
+  border: 1px solid #4bacb8;
 }
 
 #footer{
   height: 60px;
-  background: rgb(221, 221, 221);
+  background: #1b1b1b;
   padding: 15px;
   clear:both;
 }

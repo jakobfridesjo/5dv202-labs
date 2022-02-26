@@ -1,21 +1,20 @@
 <!doctype html>
 <title>{% block title %}{% endblock %} Rocket test page </title>
+<header>
+  <h1>🥔 Rotten Potatoes 🥔</h1>
+</header>
 <nav>
   <link rel="stylesheet" href="/static/style.css" />
-  <h1>Pages</h1>
-  <ul>
+  <link rel="favicon" href="/static/favicon.ico" />
+  <h2>Pages</h2>
+  <div class="sidebar">
+    <ul>
       <li><a href="/">Index</a>
       <li><a href="/medias">Medias</a>
-  </ul>
+      <li><a href="/actors">Actors</a>
+    </ul>
+  </div>
 </nav>
-<style>
-
-/* Give tables borders */
-table, th, td {
-    border: 1px solid black;
-}
-
-</style>
 <section class="content">
   {% block content %}{% endblock %}
 </section>

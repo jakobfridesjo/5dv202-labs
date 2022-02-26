@@ -4,136 +4,77 @@
  * Author: Jakob Fridesjö
  * Date: 2022-02-11
  */
-extern crate postgres;
-use postgres::{error::Error, Client, NoTls};
-use crate::Media;
+
+use crate::model::*;
+use rocket_sync_db_pools::{database, postgres};
+use postgres::error::Error;
+
+#[database("psql_pool")]
+pub struct PsqlConn(postgres::Client);
 
 /**
- * Create postgresql connection
+ * Loads all medias from database
  */
-pub fn db_create() -> Result<Client, Error> {
-    let username = "postgres";
-    let password = "postgres";
-    let host = "localhost";
-    let port = "5432";
-    let database = "rocketdb";
-
-    let conn_str = &format!(
-        "postgres://{}{}{}@{}{}{}{}{}",
-        username,
-        if password.is_empty() { "" } else { ":" },
-        password,
-        host,
-        if port.is_empty() { "" } else { ":" },
-        port,
-        if database.is_empty() { "" } else { "/" },
-        database
-    );
-
-    let mut client = Client::connect(conn_str, NoTls)?;
-
-    // Drop all tables
-    let _ = client.execute(
-        "DROP TABLE IF EXISTS Roles;
-               DROP TABLE IF EXISTS Actor;
-               DROP TABLE IF EXISTS Media;", 
-               &[]
-    );
-
-    // Create all tables
-    client.execute(
-        "-- Create table for media
-        CREATE TABLE Media (
-            media_id INT GENERATED ALWAYS AS IDENTITY,
-            media_name VARCHAR(255) NOT NULL,
-            genre VARCHAR(255) NOT NULL,
-            score FLOAT,
-            PRIMARY KEY(media_id)
-        );
-        
-        -- Create table for participants in media
-        CREATE TABLE Actor (
-            actor_id INT GENERATED ALWAYS AS IDENTITY,
-            first_name VARCHAR(255) NOT NULL,
-            last_name VARCHAR(255) NOT NULL,
-            date_birth DATE NOT NULL,
-            PRIMARY KEY(actor_id)
-        );
-        
-        -- Create table for participants role in media
-        CREATE TABLE Roles (
-            roles_id INT GENERATED ALWAYS AS IDENTITY,
-            actor_id INT,
-            media_id INT,
-            roles VARCHAR(255) NOT NULL,
-            PRIMARY KEY(roles_id),
-            CONSTRAINT fk_media
-                FOREIGN KEY(media_id)
-                    REFERENCES Media(media_id),
-            CONSTRAINT fk_actor
-                FOREIGN KEY(actor_id)
-                    REFERENCES Actor(actor_id)
-        );",
-     &[]
-    )?;
-
-    Ok(client)
-}
-
-/**
- * Get all medias from database
- */
-pub fn db_get_all_medias(client: &mut Client) -> Result<Vec<Media>, Error> {
+pub fn db_load_medias(conn: &mut postgres::Client) -> Result<Vec<Media>, Error> {
     let mut medias : Vec<Media> = Vec::new();
-    for row in client.query(
-        "SELECT name,genre,year,score FROM Media", &[])? {
+    for row in conn.query(
+        "SELECT media_name,media_genre,media_year,media_score FROM Media", &[])? {
         medias.push(Media {
-            name: row.get(0),
-            genre: row.get(1),
-            year: row.get(2),
-            score: row.get(3),
+            media_name: row.get(0),
+            media_genre: row.get(1),
+            media_year: row.get(2),
+            media_score: row.get(3),
         });
     }
+
     Ok(medias)
 }
 
 /**
- * Update media in database
+ * Inserts/updates a media in/into database
  */
-pub fn db_update(client: &mut Client) -> Result<(), Error> {
-    client.execute(
-        "UPDATE medias
-         SET col = val0
-         WHERE name = val1",
-        &[]
-    )?;
+pub fn db_insert_media(conn: &mut postgres::Client, media: Media) -> Result<(), Error> {
+
+    let mut add: bool = true;
+    for row in conn.query(
+        "SELECT * FROM Media WHERE media_name=$1",
+        &[&media.media_name]
+    )? {
+        add = false;
+        break;
+    }
+    if add {
+        println!("{}:{}:{}:{}", media.media_name, media.media_genre, media.media_year, media.media_score);
+        conn.execute(
+            "INSERT INTO Media 
+                (media_name,media_genre,media_year,media_score) 
+            VALUES 
+                ($1 ,$2, $3, $4)",
+            &[&media.media_name, &media.media_genre, &media.media_year, &media.media_score]
+        )?;
+    }
+    else {
+        println!("{}:{}:{}:{}", media.media_name, media.media_genre, media.media_year, media.media_score);
+        conn.execute(
+            "UPDATE Media
+            SET 
+                media_name=$1,media_genre=$2,media_year=$3,media_score=$4
+            WHERE media_name=$1 
+            ",
+            &[&media.media_name, &media.media_genre, &media.media_year, &media.media_score]
+        )?;
+    }
 
     Ok(())
 }
 
 /**
- * Insert media into database
+ * Deletes a media from database
  */
-pub fn db_insert(client: &mut Client, media: Media) -> Result<(), Error> {
-
-    client.execute(
-        "INSERT INTO Media (name,genre,year,score) 
-        VALUES ($1 ,$2, $3, $4)",
-        &[&media.score, &media.genre, &media.year, &media.score]
-    )?;
-
-    Ok(())
-}
-
-/**
- * Remove media from database
- */
-fn db_remove(client: &mut Client, media: Media) -> Result<(), Error> {
-
-    client.execute(
-        "DELETE FROM Media WHERE name= 
-        VALUES $1 AND year",
-        &[&media.name, &media.year] 
+pub fn db_delete_media(conn: &mut postgres::Client, media_name: MediaName) -> Result<(), Error> {
+    conn.execute(
+        "DELETE FROM Media WHERE media_name=$1",
+        &[&media_name.media_name] 
     )?;
 
     Ok(())
