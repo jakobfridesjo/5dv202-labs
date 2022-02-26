@@ -17,3 +17,8 @@ pub struct Media {
     pub media_year: i32,
     pub media_score: i32,
 }
+
+#[derive(Serialize, Deserialize, Debug, FromForm)]
+pub struct MediaName {
+    pub media_name: String,
+}

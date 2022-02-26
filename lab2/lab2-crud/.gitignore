@@ -14,4 +14,4 @@ Cargo.lock
 *.pdb
 
 # Ignore database data
-datasource.csv
+docker-database/data/

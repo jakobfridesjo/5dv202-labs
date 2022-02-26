@@ -1,13 +1,9 @@
 #[macro_use] extern crate rocket;
 
-use model::Media;
-use model::MediaContext;
-use model::IndexContext;
+use model::*;
 mod model;
 
 use rocket_dyn_templates::Template;
-use rocket::fs::FileServer;
-use serde::Serialize;
 use rocket_sync_db_pools::{database, postgres};
 use postgres::error::Error;
 use rocket::form::Form;
@@ -40,15 +36,12 @@ fn db_insert_media(conn: &mut postgres::Client, media: Media) -> Result<(), Erro
 
     let mut add: bool = true;
     for row in conn.query(
-        "SELECT media_name FROM Media WHERE media.media_name=$1",
-        &[]
+        "SELECT * FROM Media WHERE media_name=$1",
+        &[&media.media_name]
     )? {
-        let name: String = row.get(0);
-        if media.media_name.eq(&name) {
-            add = false 
-        }
+        add = false;
+        break;
     }
-    
     if add {
         println!("{}:{}:{}:{}", media.media_name, media.media_genre, media.media_year, media.media_score);
         conn.execute(
@@ -60,12 +53,13 @@ fn db_insert_media(conn: &mut postgres::Client, media: Media) -> Result<(), Erro
         )?;
     }
     else {
+        println!("{}:{}:{}:{}", media.media_name, media.media_genre, media.media_year, media.media_score);
         conn.execute(
             "UPDATE Media
             SET 
-                (media_name,media_genre,media_year,media_score) 
-            VALUES 
-                ($1 ,$2, $3, $4)",
+                media_name=$1,media_genre=$2,media_year=$3,media_score=$4
+            WHERE media_name=$1 
+            ",
             &[&media.media_name, &media.media_genre, &media.media_year, &media.media_score]
         )?;
     }
@@ -76,12 +70,10 @@ fn db_insert_media(conn: &mut postgres::Client, media: Media) -> Result<(), Erro
 /**
  * Deletes a media from database
  */
-fn db_delete_media(conn: &mut postgres::Client, media_name: String) -> Result<(), Error> {
-    let query_string: String = media_name[11..].to_string();
-    println!("NAME TO REMOVE {}", query_string);
+fn db_delete_media(conn: &mut postgres::Client, media_name: MediaName) -> Result<(), Error> {
     conn.execute(
         "DELETE FROM Media WHERE media_name=$1",
-        &[&query_string] 
+        &[&media_name.media_name] 
     )?;
 
     Ok(())
@@ -91,8 +83,9 @@ fn db_delete_media(conn: &mut postgres::Client, media_name: String) -> Result<()
  * Deletes a media
  */
 #[post("/medias/delete", data = "<media_name>")]
-async fn delete_media(conn: PsqlConn, media_name: String) -> Template {
-    conn.run(|c| db_delete_media(c, media_name)).await;
+async fn delete_media(conn: PsqlConn, media_name: Form<MediaName>) -> Template {
+    let m_name: MediaName = media_name.into_inner();
+    conn.run(|c| db_delete_media(c, m_name)).await;
     let medias_vec: Vec<Media> = conn.run(|c| db_load_medias(c)).await.unwrap();
     let context = MediaContext {medias: medias_vec};
     Template::render("medias", &context)
