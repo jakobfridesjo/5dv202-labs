@@ -1,0 +1,65 @@
+{% extends "base" %} 
+{% block header %} 
+{% endblock %} 
+{% block content %}
+<body>
+    <table border="0">
+        <tr valign="top">
+            <td width="50%">
+                <table>
+                    <thead>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>Role</th>
+                    </thead>
+                    <tbody>
+                        {% for role in roles %}
+                        <tr>
+                            <th>{{role.actor_first_name}}</th>
+                            <td>{{role.actor_last_name}}</td>
+                            <td>{{role.roles}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </td>
+            <td width="50%">
+                <form method="POST" action="/roles/add">
+                    <fieldset>
+                        <legend>
+                            <h4>Add/Update an role:</h4>
+                        </legend>
+                        <p>
+                            <field>First name:</field>
+                            <input type="text" name="role_first_name" />
+                        </p>
+                        <p>
+                            <field>Last name:</field>
+                            <input type="text" name="role_last_name" />
+                        </p>
+                        <p>
+                            <field>Role:</field>
+                            <input type="number" name="role_roles" />
+                        </p>
+                        <p>
+                            <button>Add/Update</button>
+                        </p>
+                    </fieldset>
+                </form>
+                <fieldset>
+                    <legend>
+                        <h4>Remove a role:</h4>
+                    </legend>
+                    <form method="POST" action="/roles/delete">
+                        <label>First name:</label>
+                        <input type="text" name="roles_first_name" />
+                        <label>Last name:</label>
+                        <input type="text" name="roles_last_name" />
+                        <button>Delete!</button>
+                    </form>
+                </fieldset>
+            </td>
+        </tr>
+    </table>
+</body>
+{% endblock %}
