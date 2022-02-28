@@ -1,7 +1,7 @@
 <!doctype html>
 <title>{% block title %}{% endblock %} Rocket test page </title>
 <header>
-  <h1>🥔 Rotten Potatoes 🥔</h1>
+  <h1>🥔 Rotten Potatoes</h1>
 </header>
 <nav>
   <link rel="stylesheet" href="/static/style.css" />

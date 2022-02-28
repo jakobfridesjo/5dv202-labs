@@ -25,9 +25,9 @@ CREATE TABLE Media (
 -- Create table for participants in media
 CREATE TABLE Actor (
     actor_id INT GENERATED ALWAYS AS IDENTITY,
-    first_name VARCHAR(255) NOT NULL,
-    last_name VARCHAR(255) NOT NULL,
-    date_birth DATE NOT NULL,
+    actor_first_name VARCHAR(255) NOT NULL,
+    actor_last_name VARCHAR(255) NOT NULL,
+    actor_year INT NOT NULL,
     PRIMARY KEY(actor_id)
 );
 

@@ -26,7 +26,7 @@
                 </table>
             </td>
             <td width="50%">
-                <form method="POST" action="/media/add">
+                <form method="POST" action="/medias/add">
                     <fieldset>
                         <legend>
                             <h4>Add/Update a media:</h4>

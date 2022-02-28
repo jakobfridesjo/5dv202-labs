@@ -26,12 +26,16 @@ pub struct Media {
     pub media_score: i32,
 }
 
+#[derive(Serialize, Debug)]
+pub struct ActorsContext {
+    pub actors: Vec<Actor>
+}
+
 #[derive(Serialize, Deserialize, Debug, FromForm)]
 pub struct Actor {
     pub actor_first_name: String,
     pub actor_last_name: String,
     pub actor_year: i32,
-    pub role_id: i32,
 }
 
 #[derive(Serialize, Deserialize, Debug, FromForm)]
@@ -44,4 +48,10 @@ pub struct Roles {
 #[derive(Serialize, Deserialize, Debug, FromForm)]
 pub struct MediaName {
     pub media_name: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, FromForm)]
+pub struct ActorName {
+    pub actor_first_name: String,
+    pub actor_last_name: String,
 }

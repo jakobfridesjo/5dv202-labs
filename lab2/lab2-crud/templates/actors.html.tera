@@ -8,44 +8,38 @@
             <td width="50%">
                 <table>
                     <thead>
-                        <th>Name</th>
-                        <th>Genre</th>
+                        <th>First name</th>
+                        <th>Last name</th>
                         <th>Year</th>
-                        <th>Score</th>
                     </thead>
                     <tbody>
-                        {% for media in medias %}
+                        {% for actor in actors %}
                         <tr>
-                            <th>{{media.media_name}}</th>
-                            <td>{{media.media_genre}}</td>
-                            <td>{{media.media_year}}</td>
-                            <td>{{media.media_score}}</td>
+                            <th>{{actor.actor_first_name}}</th>
+                            <td>{{actor.actor_last_name}}</td>
+                            <td>{{actor.actor_year}}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </td>
             <td width="50%">
-                <form method="POST" action="/media/add">
+                <form method="POST" action="/actors/add">
                     <fieldset>
                         <legend>
-                            <h4>Add/Update a media:</h4>
+                            <h4>Add/Update an actor:</h4>
                         </legend>
                         <p>
-                            <field>Name:</field>
-                            <input type="text" name="media_name" />
+                            <field>First name:</field>
+                            <input type="text" name="actor_first_name" />
                         </p>
                         <p>
-                            <field>Genre:</field>
-                            <input type="text" name="media_genre" />
+                            <field>Last name:</field>
+                            <input type="text" name="actor_last_name" />
                         </p>
                         <p>
                             <field>Year:</field>
-                            <input type="number" name="media_year" />
-                        </p>
-                        <p>
-                            <field>Score:</field>
-                            <input type="number" name="media_score" />
+                            <input type="number" name="actor_year" />
                         </p>
                         <p>
                             <button>Add/Update</button>
@@ -56,9 +50,11 @@
                     <legend>
                         <h4>Remove a media:</h4>
                     </legend>
-                    <form method="POST" action="/medias/delete">
-                        <label>Name:</label>
-                        <input type="text" name="media_name" />
+                    <form method="POST" action="/actors/delete">
+                        <label>First name:</label>
+                        <input type="text" name="actor_first_name" />
+                        <label>Last name:</label>
+                        <input type="text" name="actor_last_name" />
                         <button>Delete!</button>
                     </form>
                 </fieldset>

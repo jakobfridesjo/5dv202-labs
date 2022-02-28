@@ -7,8 +7,8 @@ body {
 
 button {
   color: black;
-  background: #80deea;
-  border: 1px solid #4bacb8;
+  background: #ffe0b2;
+  border: 1px solid #cbae82;
   padding: 4pt;
 }
 
@@ -23,14 +23,14 @@ thead th {
 
 table {
   border-collapse: collapse;
-  border: 1px solid #4bacb8;
+  border: 1px solid #cbae82;
   text-align: center;
 	vertical-align: middle;
 }
 
 fieldset {
   width: 278px;
-  border: 1px solid #4bacb8;
+  border: 1px solid #cbae82;
 }
 
 fieldset p {
@@ -59,18 +59,18 @@ tbody tr:nth-child(even) {
 }
 
 tbody th {
-  background-color: #80deea;
+  background-color: #ffe0b2;
   color: black;
   text-align: left;
 }
 
 tbody tr:nth-child(even) th {
-  background-color: #b4ffff;
+  background-color: #ffffe4;
 }
 
 input {
   color: black;
-  border: 1px solid #4bacb8;
+  border: 1px solid #cbae82;
   background: white;
   padding: 4pt;
   float: right;
@@ -104,7 +104,7 @@ header {
   background: #424242;
   color: white;
   width: 100%;
-  text-align: center;
+  text-align: left;
   vertical-align: middle;
   padding: 6pt;
 }
@@ -122,8 +122,8 @@ header {
   margin:0 0 0 15px;
   font-size:15px;
   list-style:none;
-  background: #80deea;
-  border: 1px solid #4bacb8;
+  background: #ffe0b2;
+  border: 1px solid #cbae82;
 }
 
 #footer{
