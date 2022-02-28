@@ -6,7 +6,7 @@
     <table border="0">
         <tr valign="top">
             <td width="50%">
-                <table>
+                <table class="media_table">
                     <thead>
                         <th>Name</th>
                         <th>Genre</th>

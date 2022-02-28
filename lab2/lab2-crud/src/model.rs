@@ -18,6 +18,11 @@ pub struct MediaContext {
     pub medias: Vec<Media>
 }
 
+#[derive(Serialize, Debug)]
+pub struct RolesContext {
+    pub roles: Vec<Role>
+}
+
 #[derive(Serialize, Deserialize, Debug, FromForm)]
 pub struct Media {
     pub media_name: String,
@@ -39,19 +44,27 @@ pub struct Actor {
 }
 
 #[derive(Serialize, Deserialize, Debug, FromForm)]
-pub struct Roles {
-    pub roles_role: String,
+pub struct Role {
+    pub actor_first_name: String,
     pub actor_last_name: String,
-    pub role_id: i32,
+    pub movie_name: String,
+    pub roles: String,
 }
 
 #[derive(Serialize, Deserialize, Debug, FromForm)]
-pub struct MediaName {
+pub struct MediaForm {
     pub media_name: String,
 }
 
 #[derive(Serialize, Deserialize, Debug, FromForm)]
-pub struct ActorName {
+pub struct ActorForm {
+    pub actor_first_name: String,
+    pub actor_last_name: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, FromForm)]
+pub struct RoleForm {
+    pub movie_name: String,
     pub actor_first_name: String,
     pub actor_last_name: String,
 }

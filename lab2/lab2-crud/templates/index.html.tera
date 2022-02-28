@@ -1,5 +1,5 @@
 {% extends "base" %}
 
 {% block content %}
-  <p>Welcome to my test page</p>
+  <p>Welcome to Rotten Potatoes, the best offline source of reviews</p>
 {% endblock %}

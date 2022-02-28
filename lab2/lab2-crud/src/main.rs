@@ -14,9 +14,9 @@ use rocket::{form::Form, response::Redirect};
 /**
  * Deletes a media
  */
-#[post("/medias/delete", data = "<media_name>")]
-async fn delete_media(conn: PsqlConn, media_name: Form<MediaName>) -> Redirect {
-    let m_name: MediaName = media_name.into_inner();
+#[post("/medias/delete", data = "<media_form>")]
+async fn delete_media(conn: PsqlConn, media_form: Form<MediaForm>) -> Redirect {
+    let m_name: MediaForm = media_form.into_inner();
     let result = conn.run(|c| db_delete_media(c, m_name)).await;
     if result.is_err() {
         println!("Error deleting media");
@@ -50,9 +50,9 @@ async fn medias(conn: PsqlConn) -> Template {
 /**
  * Deletes a media
  */
-#[post("/actors/delete", data = "<actor_name>")]
-async fn delete_actor(conn: PsqlConn, actor_name: Form<ActorName>) -> Redirect {
-    let a_name: ActorName = actor_name.into_inner();
+#[post("/actors/delete", data = "<actor_form>")]
+async fn delete_actor(conn: PsqlConn, actor_form: Form<ActorForm>) -> Redirect {
+    let a_name: ActorForm = actor_form.into_inner();
     let result = conn.run(|c| db_delete_actor(c, a_name)).await;
     if result.is_err() {
         println!("Error deleting actor");
@@ -84,6 +84,42 @@ async fn actors(conn: PsqlConn) -> Template {
 }
 
 /**
+ * Deletes a media
+ */
+#[post("/roles/delete", data = "<role_form>")]
+async fn delete_role(conn: PsqlConn, role_form: Form<RoleForm>) -> Redirect {
+    let r_form: RoleForm = role_form.into_inner();
+    let result = conn.run(|c| db_delete_role(c,r_form)).await;
+    if result.is_err() {
+        println!("Error deleting role");
+    }
+    Redirect::to(uri!(medias))
+}
+
+/**
+ * Adds an actor
+ */
+#[post("/roles/add", data = "<actor>")]
+async fn add_role(conn: PsqlConn, actor: Form<Role>) -> Redirect {
+    let r: Role = actor.into_inner();
+    let result = conn.run(|c| db_insert_role(c,r)).await;
+    if result.is_err() {
+        println!("Error adding role");
+    }
+    Redirect::to(uri!(actors))
+}
+
+/**
+ * Renders the actors page
+ */
+#[get("/roles")]
+async fn roles(conn: PsqlConn) -> Template {
+    let roles_vec: Vec<Role> = conn.run(|c| db_load_roles(c)).await.unwrap();
+    let context = RolesContext {roles: roles_vec};
+    Template::render("actors", &context)
+}
+
+/**
  * Renders the index page
  */
 #[get("/")]
@@ -99,7 +135,7 @@ fn rocket() -> _ {
     /* Launch rocket! */
     rocket::build()
         .mount("/static", FileServer::from("static"))
-        .mount("/", routes![index,medias,delete_media,add_media,actors,add_actor, delete_actor])
+        .mount("/", routes![index,medias,delete_media,add_media,actors,add_actor, delete_actor, roles, add_role, delete_role])
         .attach(Template::fairing())
         .attach(PsqlConn::fairing())
 }
