@@ -3,9 +3,9 @@
 {% endblock %} 
 {% block content %}
 <body>
-    <table border="0">
-        <tr valign="top">
-            <td width="50%">
+    <table border="0" align=center valign=top>
+        <tr valign=top>
+            <td width="70%">
                 <table class="media_table">
                     <thead>
                         <th>First name</th>
@@ -23,7 +23,7 @@
                     </tbody>
                 </table>
             </td>
-            <td width="50%">
+            <td width="30%">
                 <form method="POST" action="/actors/add">
                     <fieldset>
                         <legend>
@@ -39,10 +39,9 @@
                         </p>
                         <p>
                             <field>Year:</field>
-                            <input type="number" name="actor_year" />
+                            <input type="number" min="1800" name="actor_year" />
                         </p>
-                        <p>
-                        </p>
+                        <p></p>
                         <p align=center>
                             <button>Add/Update</button>
                         </p>

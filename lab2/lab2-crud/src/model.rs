@@ -26,7 +26,7 @@ pub struct ActorsContext {
 
 #[derive(Serialize, Debug)]
 pub struct RolesContext {
-    pub roles: Vec<RoleForm>
+    pub roles: Vec<RoleAddForm>
 }
 
 #[derive(Serialize, Deserialize, Debug, FromForm)]
@@ -63,9 +63,16 @@ pub struct ActorForm {
 }
 
 #[derive(Serialize, Deserialize, Debug, FromForm)]
-pub struct RoleForm {
+pub struct RoleAddForm {
     pub media_name: String,
     pub actor_first_name: String,
     pub actor_last_name: String,
     pub roles: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, FromForm)]
+pub struct RoleDeleteForm {
+    pub media_name: String,
+    pub actor_first_name: String,
+    pub actor_last_name: String,
 }

@@ -3,19 +3,22 @@
 {% endblock %} 
 {% block content %}
 <body>
-    <table border="0">
+    <table border="0" align=center valign=top>
         <tr valign="top">
-            <td width="50%">
-                <table>
+            <td width="70%">
+                <table class="media_table">
                     <thead>
+                        <th>Movie name</th>
                         <th>First name</th>
                         <th>Last name</th>
                         <th>Role</th>
+                        <th></th>
                     </thead>
                     <tbody>
                         {% for role in roles %}
                         <tr>
-                            <th>{{role.actor_first_name}}</th>
+                            <th>{{role.media_name}}</th>
+                            <td>{{role.actor_first_name}}</td>
                             <td>{{role.actor_last_name}}</td>
                             <td>{{role.roles}}</td>
                         </tr>
@@ -23,41 +26,57 @@
                     </tbody>
                 </table>
             </td>
-            <td width="50%">
+            <td width="30%">
                 <form method="POST" action="/roles/add">
                     <fieldset>
                         <legend>
-                            <h4>Add/Update an role:</h4>
+                            <h4>Add/Update a role:</h4>
                         </legend>
                         <p>
+                            <field>Movie name:</field>
+                            <input type="text" name="media_name" />
+                        </p>
+                        <p>
                             <field>First name:</field>
-                            <input type="text" name="role_first_name" />
+                            <input type="text" name="actor_first_name" />
                         </p>
                         <p>
                             <field>Last name:</field>
-                            <input type="text" name="role_last_name" />
+                            <input type="text" name="actor_last_name" />
                         </p>
                         <p>
                             <field>Role:</field>
-                            <input type="number" name="role_roles" />
+                            <input type="text" name="roles" />
                         </p>
-                        <p>
+                        <p></p>
+                        <p align=center>
                             <button>Add/Update</button>
                         </p>
                     </fieldset>
                 </form>
+                <form method="POST" action="/roles/delete">
                 <fieldset>
                     <legend>
                         <h4>Remove a role:</h4>
                     </legend>
-                    <form method="POST" action="/roles/delete">
+                    <p>
+                        <label>Movie name:</label>
+                        <input type="text" name="media_name" />
+                    </p>
+                    <p>
                         <label>First name:</label>
-                        <input type="text" name="roles_first_name" />
+                        <input type="text" name="actor_first_name" />
+                    </p>
+                    <p>
                         <label>Last name:</label>
-                        <input type="text" name="roles_last_name" />
-                        <button>Delete!</button>
-                    </form>
+                        <input type="text" name="actor_last_name" />
+                    </p>
+                    <p></p>
+                    <p align=center>
+                        <button>Delete</button>
+                    </p>
                 </fieldset>
+                </form>
             </td>
         </tr>
     </table>

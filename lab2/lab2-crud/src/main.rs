@@ -1,7 +1,5 @@
 #[macro_use] extern crate rocket;
 
-use std::result;
-
 use model::*;
 mod model;
 use database::*;
@@ -87,26 +85,26 @@ async fn actors(conn: PsqlConn) -> Template {
  * Deletes a media
  */
 #[post("/roles/delete", data = "<role_form>")]
-async fn delete_role(conn: PsqlConn, role_form: Form<RoleForm>) -> Redirect {
-    let r_form: RoleForm = role_form.into_inner();
+async fn delete_role(conn: PsqlConn, role_form: Form<RoleDeleteForm>) -> Redirect {
+    let r_form: RoleDeleteForm = role_form.into_inner();
     let result = conn.run(|c| db_delete_role(c,r_form)).await;
     if result.is_err() {
         println!("Error deleting role");
     }
-    Redirect::to(uri!(medias))
+    Redirect::to(uri!(roles))
 }
 
 /**
  * Adds an actor
  */
 #[post("/roles/add", data = "<actor>")]
-async fn add_role(conn: PsqlConn, actor: Form<RoleForm>) -> Redirect {
-    let r: RoleForm = actor.into_inner();
+async fn add_role(conn: PsqlConn, actor: Form<RoleAddForm>) -> Redirect {
+    let r: RoleAddForm = actor.into_inner();
     let result = conn.run(|c| db_insert_role(c,r)).await;
     if result.is_err() {
         println!("Error adding role");
     }
-    Redirect::to(uri!(actors))
+    Redirect::to(uri!(roles))
 }
 
 /**
@@ -114,9 +112,9 @@ async fn add_role(conn: PsqlConn, actor: Form<RoleForm>) -> Redirect {
  */
 #[get("/roles")]
 async fn roles(conn: PsqlConn) -> Template {
-    let roles_vec: Vec<RoleForm> = conn.run(|c| db_load_roles(c)).await.unwrap();
+    let roles_vec: Vec<RoleAddForm> = conn.run(|c| db_load_roles(c)).await.unwrap();
     let context = RolesContext {roles: roles_vec};
-    Template::render("actors", &context)
+    Template::render("roles", &context)
 }
 
 /**

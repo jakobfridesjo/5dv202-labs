@@ -3,9 +3,9 @@
 {% endblock %} 
 {% block content %}
 <body>
-    <table border="0">
+    <table border="0" align=center valign=top>
         <tr valign="top">
-            <td width="50%">
+            <td width="70%">
                 <table class="media_table">
                     <thead>
                         <th>Name</th>
@@ -25,7 +25,7 @@
                     </tbody>
                 </table>
             </td>
-            <td width="50%">
+            <td width="30%">
                 <form method="POST" action="/medias/add">
                     <fieldset>
                         <legend>
@@ -41,11 +41,11 @@
                         </p>
                         <p>
                             <field>Year:</field>
-                            <input type="number" name="media_year" />
+                            <input type="number" min="1895" name="media_year" />
                         </p>
                         <p>
                             <field>Score:</field>
-                            <input type="number" name="media_score" />
+                            <input type="number" min="1" max="100" name="media_score" />
                         </p>
                         <p></p>
                         <p align=center>

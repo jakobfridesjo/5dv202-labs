@@ -98,11 +98,12 @@ pub fn db_load_actors(conn: &mut postgres::Client) -> Result<Vec<Actor>, Error> 
 /**
  * Loads all roles from database
  */
-pub fn db_load_roles(conn: &mut postgres::Client) -> Result<Vec<RoleForm>, Error> {
-    let mut roles : Vec<RoleForm> = Vec::new();
+pub fn db_load_roles(conn: &mut postgres::Client) -> Result<Vec<RoleAddForm>, Error> {
+    let mut roles : Vec<RoleAddForm> = Vec::new();
     for row in conn.query(
-        "SELECT actor_first_name,actor_last_name,media_name,roles FROM Roles", &[])? {
-        roles.push(RoleForm {
+        "SELECT actor_first_name,actor_last_name,media_name,roles FROM Roles,Media,Actor 
+        WHERE Roles.media_id=Media.media_id AND Roles.actor_id=Actor.actor_id", &[])? {
+        roles.push(RoleAddForm {
             actor_first_name: row.get(0),
             actor_last_name: row.get(1),
             media_name: row.get(2),
@@ -152,36 +153,59 @@ pub fn db_insert_actor(conn: &mut postgres::Client, actor: Actor) -> Result<(), 
 /**
  * Inserts/updates a media in/into database
  */
-pub fn db_insert_role(conn: &mut postgres::Client, role: RoleForm) -> Result<(), Error> {
+pub fn db_insert_role(conn: &mut postgres::Client, role: RoleAddForm) -> Result<(), Error> {
 
-    let mut add: bool = true;
-    for _ in conn.query(
-        "SELECT * FROM Role WHERE Role.actor_id AND Role.media_id IN (SELECT * FROM Media,Actor WHERE Actor.actor_first_name=$1 AND Actor.actor_last_name=$2 AND Media.media_name=$3",
-        &[&role.actor_first_name,&role.actor_last_name, &role.media_name]
+    let mut actor_id: i32 = -1;
+    let mut media_id: i32 = -1;
+
+    for row in conn.query(
+        "SELECT actor_id FROM Actor WHERE Actor.actor_first_name=$1 
+                AND Actor.actor_last_name=$2",
+        &[&role.actor_first_name,&role.actor_last_name]
     )? {
-        add = false;
+        actor_id = row.get(0);
         break;
     }
-    if add {
-        conn.execute(
-            "INSERT INTO Role
-                (actor_first_name,actor_last_name,media_name,roles) 
-            VALUES 
-                ($1 ,$2, $3, $4)",
-            &[&role.actor_first_name, &role.actor_last_name, &role.media_name, &role.roles]
-        )?;
-    }
-    else {
-        conn.execute(
-            "UPDATE Roles
-            SET 
-                roles=$4
-            WHERE actor_first_name=$1 AND actor_last_name=$2 AND movie_name=$3
-            ",
-            &[&role.actor_first_name, &role.actor_last_name, &role.media_name, &role.roles]
-        )?;
+
+    for row in conn.query(
+        "SELECT media_id FROM Media WHERE Media.media_name=$1",
+        &[&role.media_name]
+    )? {
+        media_id = row.get(0);
+        break;
     }
 
+    if (actor_id != -1) && (media_id != -1) {
+
+        let mut add: bool = true;
+        for _ in conn.query(
+            "SELECT * FROM Roles WHERE Roles.actor_id=$1 AND Roles.media_id=$2",
+            &[&actor_id, &media_id]
+        )? {
+            add = false;
+            break;
+        }
+
+        if add {
+            conn.execute(
+                "INSERT INTO Roles
+                    (actor_id,media_id,roles) 
+                VALUES 
+                    ($1 ,$2, $3)",
+                &[&actor_id, &media_id, &role.roles]
+            )?;
+        }
+        else {
+            conn.execute(
+                "UPDATE Roles
+                SET 
+                    roles=$3
+                WHERE actor_id=$1 AND media_id=$2
+                ",
+         &[&actor_id, &media_id, &role.roles]
+            )?;
+        }
+    }
     Ok(())
 }
 
@@ -216,12 +240,30 @@ pub fn db_delete_actor(conn: &mut postgres::Client, actor_name: ActorForm) -> Re
 /**
  * Deletes a role from database
  */
-pub fn db_delete_role(conn: &mut postgres::Client, role_data: RoleForm) -> Result<(), Error> {
+pub fn db_delete_role(conn: &mut postgres::Client, role_data: RoleDeleteForm) -> Result<(), Error> {
+    let mut actor_id: i32 = -1;
+    let mut media_id: i32 = -1;
+
+    for row in conn.query(
+        "SELECT actor_id FROM Actor WHERE Actor.actor_first_name=$1 
+                AND Actor.actor_last_name=$2",
+        &[&role_data.actor_first_name,&role_data.actor_last_name]
+    )? {
+        actor_id = row.get(0);
+        break;
+    }
+
+    for row in conn.query(
+        "SELECT media_id FROM Media WHERE Media.media_name=$1",
+        &[&role_data.media_name]
+    )? {
+        media_id = row.get(0);
+        break;
+    }
+
     conn.execute(
-        "DELETE FROM Role WHERE actor_id AND movie_id IN 
-        (SELECT * FROM Actor,Media WHERE Actor.actor_first_name=$1 
-        AND Actor.actor_last_name=$2 AND Media.media_name=$3)",
-        &[&role_data.actor_first_name,&role_data.actor_last_name, &role_data.media_name] 
+        "DELETE FROM Roles WHERE Roles.actor_id=$1 AND Roles.media_id=$2",
+        &[&actor_id,&media_id] 
     )?;
 
     Ok(())
