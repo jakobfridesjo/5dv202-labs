@@ -115,6 +115,26 @@ pub fn db_load_roles(conn: &mut postgres::Client) -> Result<Vec<RoleAddForm>, Er
 }
 
 /**
+ * Loads all roles from for a specific media from database
+ */
+pub fn db_load_roles_for_media(conn: &mut postgres::Client, m_name: String) -> Result<Vec<RoleAddForm>, Error> {
+    let mut roles : Vec<RoleAddForm> = Vec::new();
+    for row in conn.query(
+        "SELECT actor_first_name,actor_last_name,media_name,roles FROM Roles,Media,Actor 
+            WHERE Roles.media_id=Media.media_id AND Roles.actor_id=Actor.actor_id 
+            AND Media.media_name=$1", &[&m_name])? {
+        roles.push(RoleAddForm {
+            actor_first_name: row.get(0),
+            actor_last_name: row.get(1),
+            media_name: row.get(2),
+            roles: row.get(3),
+        });
+    }
+
+    Ok(roles)
+}
+
+/**
  * Inserts/updates a media in/into database
  */
 pub fn db_insert_actor(conn: &mut postgres::Client, actor: Actor) -> Result<(), Error> {

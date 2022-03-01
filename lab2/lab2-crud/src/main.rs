@@ -110,6 +110,16 @@ async fn add_role(conn: PsqlConn, actor: Form<RoleAddForm>) -> Redirect {
 /**
  * Renders the actors page
  */
+#[get("/roles/in/<media>")]
+async fn roles_in_media(conn: PsqlConn, media: String) -> Template {
+    let roles_vec: Vec<RoleAddForm> = conn.run(|c| db_load_roles_for_media(c, media)).await.unwrap();
+    let context = RolesContext {roles: roles_vec};
+    Template::render("media_roles", &context)
+}
+
+/**
+ * Renders the actors page
+ */
 #[get("/roles")]
 async fn roles(conn: PsqlConn) -> Template {
     let roles_vec: Vec<RoleAddForm> = conn.run(|c| db_load_roles(c)).await.unwrap();
@@ -133,7 +143,8 @@ fn rocket() -> _ {
     /* Launch rocket! */
     rocket::build()
         .mount("/static", FileServer::from("static"))
-        .mount("/", routes![index,medias,delete_media,add_media,actors,add_actor, delete_actor, roles, add_role, delete_role])
+        .mount("/", routes![index,medias,delete_media,add_media,actors,add_actor, 
+            delete_actor, roles, add_role, delete_role, roles_in_media])
         .attach(Template::fairing())
         .attach(PsqlConn::fairing())
 }
