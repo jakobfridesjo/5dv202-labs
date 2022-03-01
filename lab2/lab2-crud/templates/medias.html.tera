@@ -47,21 +47,27 @@
                             <field>Score:</field>
                             <input type="number" name="media_score" />
                         </p>
-                        <p>
+                        <p></p>
+                        <p align=center>
                             <button>Add/Update</button>
                         </p>
                     </fieldset>
                 </form>
+                <form method="POST" action="/medias/delete">
                 <fieldset>
                     <legend>
                         <h4>Remove a media:</h4>
                     </legend>
-                    <form method="POST" action="/medias/delete">
+                    <p>
                         <label>Name:</label>
                         <input type="text" name="media_name" />
-                        <button>Delete!</button>
-                    </form>
+                    </p>
+                    <p></p>
+                    <p align=center>
+                        <button>Delete</button>
+                    </p>
                 </fieldset>
+                </form>
             </td>
         </tr>
     </table>

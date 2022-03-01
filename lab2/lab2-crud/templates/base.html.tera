@@ -1,4 +1,5 @@
 <!doctype html>
+
 <title>{% block title %}{% endblock %} Rocket test page </title>
 <body>
 <table class="layout_table" align=center border=thin >

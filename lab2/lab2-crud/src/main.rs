@@ -100,8 +100,8 @@ async fn delete_role(conn: PsqlConn, role_form: Form<RoleForm>) -> Redirect {
  * Adds an actor
  */
 #[post("/roles/add", data = "<actor>")]
-async fn add_role(conn: PsqlConn, actor: Form<Role>) -> Redirect {
-    let r: Role = actor.into_inner();
+async fn add_role(conn: PsqlConn, actor: Form<RoleForm>) -> Redirect {
+    let r: RoleForm = actor.into_inner();
     let result = conn.run(|c| db_insert_role(c,r)).await;
     if result.is_err() {
         println!("Error adding role");
@@ -114,7 +114,7 @@ async fn add_role(conn: PsqlConn, actor: Form<Role>) -> Redirect {
  */
 #[get("/roles")]
 async fn roles(conn: PsqlConn) -> Template {
-    let roles_vec: Vec<Role> = conn.run(|c| db_load_roles(c)).await.unwrap();
+    let roles_vec: Vec<RoleForm> = conn.run(|c| db_load_roles(c)).await.unwrap();
     let context = RolesContext {roles: roles_vec};
     Template::render("actors", &context)
 }

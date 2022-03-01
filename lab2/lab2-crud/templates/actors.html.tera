@@ -42,22 +42,31 @@
                             <input type="number" name="actor_year" />
                         </p>
                         <p>
+                        </p>
+                        <p align=center>
                             <button>Add/Update</button>
                         </p>
                     </fieldset>
                 </form>
+                <form method="POST" action="/actors/delete">
                 <fieldset>
                     <legend>
                         <h4>Remove a media:</h4>
                     </legend>
-                    <form method="POST" action="/actors/delete">
-                        <label>First name:</label>
-                        <input type="text" name="actor_first_name" />
-                        <label>Last name:</label>
-                        <input type="text" name="actor_last_name" />
-                        <button>Delete!</button>
-                    </form>
+                        <p>
+                            <label>First name:</label>
+                            <input type="text" name="actor_first_name" />
+                        </p>
+                        <p>
+                            <label>Last name:</label>
+                            <input type="text" name="actor_last_name" />
+                        </p>
+                        <p></p>
+                        <p align=center>
+                            <button>Delete!</button>
+                        </p>
                 </fieldset>
+                </form>
             </td>
         </tr>
     </table>
