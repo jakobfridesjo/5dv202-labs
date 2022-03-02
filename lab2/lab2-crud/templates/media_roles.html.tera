@@ -12,7 +12,6 @@
                         <th>First name</th>
                         <th>Last name</th>
                         <th>Role</th>
-                        <th></th>
                     </thead>
                     <tbody>
                         {% for role in roles %}
