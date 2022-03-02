@@ -46,3 +46,40 @@ CREATE TABLE Roles (
         FOREIGN KEY(actor_id)
             REFERENCES Actor(actor_id)
 );
+
+-- Create a trigger function to only insert valid media
+CREATE OR REPLACE FUNCTION valid_media_insert_func()
+    RETURNS trigger AS $BODY$
+BEGIN
+    IF (New.media_year >=1895) AND (New.media_score >= 0) AND (New.media_score <= 100) THEN
+        RETURN NEW;
+    ELSE
+        RETURN NULL;
+    END IF;
+END $BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER add_valid_score_insert
+BEFORE INSERT
+ON Media
+FOR EACH ROW
+EXECUTE PROCEDURE valid_score_insert_func();
+
+-- Create a trigger function to only update media correctly
+CREATE OR REPLACE FUNCTION valid_media_update_func()
+    RETURNS trigger AS $BODY$
+BEGIN
+    IF (New.media_year >=1888) AND (New.media_score >= 0) AND (New.media_score <= 100) THEN
+        New.media_score = ((NEW.media_score + (SELECT media_score FROM Media WHERE Media.Media_name=New.media_name)) / 2);
+        RETURN NEW;
+    ELSE
+        RETURN NULL;
+    END IF;
+END $BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER add_valid_score_update
+BEFORE UPDATE
+ON Media
+FOR EACH ROW
+EXECUTE PROCEDURE valid_score_update_func();

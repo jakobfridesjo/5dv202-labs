@@ -15,7 +15,7 @@ pub struct IndexContext<String> {
 
 #[derive(Serialize, Debug)]
 pub struct MediaContext {
-    pub medias: Vec<Media>
+    pub media: Vec<Media>
 }
 
 

@@ -61,23 +61,23 @@ pub fn db_insert_media(conn: &mut postgres::Client, media: Media) -> Result<(), 
 
 
 /**
- * Loads all medias from database
+ * Loads all media from database
  */
-pub fn db_load_medias(conn: &mut postgres::Client) -> Result<Vec<Media>, Error> {
-    let mut medias : Vec<Media> = Vec::new();
+pub fn db_load_media(conn: &mut postgres::Client) -> Result<Vec<Media>, Error> {
+    let mut vec_media : Vec<Media> = Vec::new();
     for row in conn.query(
         "SELECT media_name,media_genre,media_year,media_score FROM Media", &[])? {
-        medias.push(Media {
+        vec_media.push(Media {
             media_name: row.get(0),
             media_genre: row.get(1),
             media_year: row.get(2),
             media_score: row.get(3),
         });
     }
-    medias.sort_by_key(|item| (item.media_score));
-    medias.reverse();
+    vec_media.sort_by_key(|item| (item.media_score));
+    vec_media.reverse();
 
-    Ok(medias)
+    Ok(vec_media)
 }
 
 /**

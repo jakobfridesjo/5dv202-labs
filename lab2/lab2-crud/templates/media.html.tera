@@ -14,23 +14,23 @@
                         <th>Score</th>
                     </thead>
                     <tbody>
-                        {% for media in medias %}
+                        {% for m in media %}
                         <tr>
                             <th>
-                                <a href="/roles/in/{{media.media_name}}">
-                                    {{media.media_name}}
+                                <a href="/roles/in/{{m.media_name}}">
+                                    {{m.media_name}}
                                 </a>
                             </th>
-                            <td>{{media.media_genre}}</td>
-                            <td>{{media.media_year}}</td>
-                            <td>{{media.media_score}}</td>
+                            <td>{{m.media_genre}}</td>
+                            <td>{{m.media_year}}</td>
+                            <td>{{m.media_score}}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </td>
             <td width="30%">
-                <form method="POST" action="/medias/add">
+                <form method="POST" action="/media/add">
                     <fieldset>
                         <legend>
                             <h4>Add/Update a media:</h4>
@@ -45,7 +45,7 @@
                         </p>
                         <p>
                             <field>Year:</field>
-                            <input type="number" min="1895" name="media_year" />
+                            <input type="number" min="1888" name="media_year" />
                         </p>
                         <p>
                             <field>Score:</field>
@@ -57,7 +57,7 @@
                         </p>
                     </fieldset>
                 </form>
-                <form method="POST" action="/medias/delete">
+                <form method="POST" action="/media/delete">
                 <fieldset>
                     <legend>
                         <h4>Remove a media:</h4>

@@ -12,37 +12,37 @@ use rocket::{form::Form, response::Redirect};
 /**
  * Deletes a media
  */
-#[post("/medias/delete", data = "<media_form>")]
+#[post("/media/delete", data = "<media_form>")]
 async fn delete_media(conn: PsqlConn, media_form: Form<MediaForm>) -> Redirect {
     let m_name: MediaForm = media_form.into_inner();
     let result = conn.run(|c| db_delete_media(c, m_name)).await;
     if result.is_err() {
         println!("Error deleting media");
     }
-    Redirect::to(uri!(medias))
+    Redirect::to(uri!(media))
 }
 
 /**
  * Adds a media
  */
-#[post("/medias/add", data = "<media>")]
+#[post("/media/add", data = "<media>")]
 async fn add_media(conn: PsqlConn, media: Form<Media>) -> Redirect {
     let m: Media = media.into_inner();
     let result = conn.run(|c| db_insert_media(c, m)).await;
     if result.is_err() {
         println!("Error adding media");
     }
-    Redirect::to(uri!(medias))
+    Redirect::to(uri!(media))
 }
 
 /**
- * Renders the medias page
+ * Renders the media page
  */
-#[get("/medias")]
-async fn medias(conn: PsqlConn) -> Template {
-    let medias_vec: Vec<Media> = conn.run(|c| db_load_medias(c)).await.unwrap();
-    let context = MediaContext {medias: medias_vec};
-    Template::render("medias", &context)
+#[get("/media")]
+async fn media(conn: PsqlConn) -> Template {
+    let media_vec: Vec<Media> = conn.run(|c| db_load_media(c)).await.unwrap();
+    let context = MediaContext {media: media_vec};
+    Template::render("media", &context)
 }
 
 /**
@@ -55,7 +55,7 @@ async fn delete_actor(conn: PsqlConn, actor_form: Form<ActorForm>) -> Redirect {
     if result.is_err() {
         println!("Error deleting actor");
     }
-    Redirect::to(uri!(medias))
+    Redirect::to(uri!(media))
 }
 
 /**
@@ -143,7 +143,7 @@ fn rocket() -> _ {
     /* Launch rocket! */
     rocket::build()
         .mount("/static", FileServer::from("static"))
-        .mount("/", routes![index,medias,delete_media,add_media,actors,add_actor, 
+        .mount("/", routes![index,media,delete_media,add_media,actors,add_actor, 
             delete_actor, roles, add_role, delete_role, roles_in_media])
         .attach(Template::fairing())
         .attach(PsqlConn::fairing())
