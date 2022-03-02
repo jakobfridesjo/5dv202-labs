@@ -8,7 +8,7 @@
             <td width="70%">
                 <table class="media_table">
                     <thead>
-                        <th>Name</th>
+                        <th>Movie name</th>
                         <th>Genre</th>
                         <th>Year</th>
                         <th>Score</th>

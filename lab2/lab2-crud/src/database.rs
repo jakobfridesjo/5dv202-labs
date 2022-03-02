@@ -74,6 +74,8 @@ pub fn db_load_medias(conn: &mut postgres::Client) -> Result<Vec<Media>, Error> 
             media_score: row.get(3),
         });
     }
+    medias.sort_by_key(|item| (item.media_score));
+    medias.reverse();
 
     Ok(medias)
 }
@@ -91,6 +93,9 @@ pub fn db_load_actors(conn: &mut postgres::Client) -> Result<Vec<Actor>, Error> 
             actor_year: row.get(2),
         });
     }
+
+    actors.sort_by_key(|item| (item.actor_year));
+    actors.reverse();
 
     Ok(actors)
 }
@@ -111,6 +116,8 @@ pub fn db_load_roles(conn: &mut postgres::Client) -> Result<Vec<RoleAddForm>, Er
         });
     }
 
+    roles.sort_by_key(|item| (item.media_name.clone()));
+
     Ok(roles)
 }
 
@@ -130,6 +137,8 @@ pub fn db_load_roles_for_media(conn: &mut postgres::Client, m_name: String) -> R
             roles: row.get(3),
         });
     }
+
+    roles.sort_by_key(|item| (item.actor_first_name.clone()));
 
     Ok(roles)
 }

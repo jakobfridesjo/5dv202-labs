@@ -19,6 +19,7 @@ CREATE TABLE Media (
     media_genre VARCHAR(255) NOT NULL,
     media_year INT NOT NULL,
     media_score INT NOT NULL,
+    media_image_url VARCAHR(255) NOT NULL,
     PRIMARY KEY(media_id)
 );
 

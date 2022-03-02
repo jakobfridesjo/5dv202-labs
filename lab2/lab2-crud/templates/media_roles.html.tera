@@ -8,17 +8,13 @@
             <td width="70%">
                 <table class="media_table">
                     <thead>
-                        <th>Movie name</th>
-                        <th>First name</th>
-                        <th>Last name</th>
+                        <th>Actor name</th>
                         <th>Role</th>
                     </thead>
                     <tbody>
                         {% for role in roles %}
                         <tr>
-                            <th>{{role.media_name}}</th>
-                            <td>{{role.actor_first_name}}</td>
-                            <td>{{role.actor_last_name}}</td>
+                            <th>{{role.actor_first_name}} {{role.actor_last_name}}</th>
                             <td>{{role.roles}}</td>
                         </tr>
                         {% endfor %}
