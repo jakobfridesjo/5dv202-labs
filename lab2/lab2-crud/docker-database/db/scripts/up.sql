@@ -58,11 +58,11 @@ BEGIN
 END $BODY$
 LANGUAGE plpgsql;
 
-CREATE TRIGGER add_valid_score_insert
+CREATE TRIGGER add_valid_media_insert
 BEFORE INSERT
 ON Media
 FOR EACH ROW
-EXECUTE PROCEDURE valid_score_insert_func();
+EXECUTE PROCEDURE valid_media_insert_func();
 
 -- Create a trigger function to only update media correctly
 CREATE OR REPLACE FUNCTION valid_media_update_func()
@@ -77,8 +77,8 @@ BEGIN
 END $BODY$
 LANGUAGE plpgsql;
 
-CREATE TRIGGER add_valid_score_update
+CREATE TRIGGER add_valid_media_update
 BEFORE UPDATE
 ON Media
 FOR EACH ROW
-EXECUTE PROCEDURE valid_score_update_func();
+EXECUTE PROCEDURE valid_media_update_func();

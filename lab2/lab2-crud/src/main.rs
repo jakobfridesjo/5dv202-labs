@@ -142,7 +142,7 @@ fn rocket() -> _ {
     
     /* Launch rocket! */
     rocket::build()
-        .mount("/static", FileServer::from("static"))
+        .mount("/", FileServer::from("static"))
         .mount("/", routes![index,media,delete_media,add_media,actors,add_actor, 
             delete_actor, roles, add_role, delete_role, roles_in_media])
         .attach(Template::fairing())
