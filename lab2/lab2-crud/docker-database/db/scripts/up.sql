@@ -50,7 +50,7 @@ CREATE TABLE Roles (
 CREATE OR REPLACE FUNCTION valid_media_insert_func()
     RETURNS trigger AS $BODY$
 BEGIN
-    IF (New.media_year >=1895) AND (New.media_score >= 0) AND (New.media_score <= 100) THEN
+    IF (New.media_year >=1888) AND (New.media_score >= 0) AND (New.media_score <= 100) THEN
         RETURN NEW;
     ELSE
         RETURN NULL;

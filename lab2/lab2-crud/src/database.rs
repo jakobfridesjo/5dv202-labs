@@ -246,6 +246,13 @@ pub fn db_insert_role(conn: &mut postgres::Client, role: RoleAddForm) -> Result<
  * Deletes a media from database
  */
 pub fn db_delete_media(conn: &mut postgres::Client, media_name: MediaForm) -> Result<(), Error> {
+    
+    conn.execute(
+        "DELETE FROM Roles WHERE 
+        media_id=(SELECT media_id FROM Media WHERE media_name=$1)",
+        &[&media_name.media_name] 
+    )?;
+    
     conn.execute(
         "DELETE FROM Media WHERE media_name=$1",
         &[&media_name.media_name] 

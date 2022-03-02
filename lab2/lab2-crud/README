@@ -1,0 +1,5 @@
+FOR DATABASE
+	Run 'docker-compose up' in docker-database folder
+
+FOR ROCKET
+	Run 'cargo run' from project root
