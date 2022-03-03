@@ -31,7 +31,7 @@ pub fn db_insert_media(conn: &mut postgres::Client, media: Media) -> Result<(), 
         break;
     }
     if add {
-        println!("{}:{}:{}:{}", media.media_name, media.media_genre, media.media_year, media.media_score);
+        //println!("{}:{}:{}:{}", media.media_name, media.media_genre, media.media_year, media.media_score);
         conn.execute(
             "INSERT INTO Media 
                 (media_name,media_genre,media_year,media_score) 
@@ -41,7 +41,7 @@ pub fn db_insert_media(conn: &mut postgres::Client, media: Media) -> Result<(), 
         )?;
     }
     else {
-        println!("{}:{}:{}:{}", media.media_name, media.media_genre, media.media_year, media.media_score);
+        //println!("{}:{}:{}:{}", media.media_name, media.media_genre, media.media_year, media.media_score);
         conn.execute(
             "UPDATE Media
             SET 
