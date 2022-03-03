@@ -50,7 +50,7 @@
                 <form method="POST" action="/actors/delete">
                 <fieldset>
                     <legend>
-                        <h4>Remove a media:</h4>
+                        <h4>Remove an actor:</h4>
                     </legend>
                         <p>
                             <label>First name:</label>

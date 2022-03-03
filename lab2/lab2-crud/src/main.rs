@@ -55,7 +55,7 @@ async fn delete_actor(conn: PsqlConn, actor_form: Form<ActorForm>) -> Redirect {
     if result.is_err() {
         println!("Error deleting actor");
     }
-    Redirect::to(uri!(media))
+    Redirect::to(uri!(actors))
 }
 
 /**
