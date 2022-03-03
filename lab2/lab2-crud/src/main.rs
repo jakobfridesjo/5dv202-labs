@@ -108,7 +108,7 @@ async fn add_role(conn: PsqlConn, actor: Form<RoleAddForm>) -> Redirect {
 }
 
 /**
- * Renders the actors page
+ * Renders the page with roles for selected media
  */
 #[get("/roles/in/<media>")]
 async fn roles_in_media(conn: PsqlConn, media: String) -> Template {
@@ -118,7 +118,7 @@ async fn roles_in_media(conn: PsqlConn, media: String) -> Template {
 }
 
 /**
- * Renders the actors page
+ * Renders the page for roles
  */
 #[get("/roles")]
 async fn roles(conn: PsqlConn) -> Template {

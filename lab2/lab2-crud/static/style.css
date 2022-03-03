@@ -317,7 +317,7 @@ ul {
 /* OBJECTS */
 
 .bubble {
-  background-image: url("/static/potato.png");
+  background-image: url("/potato.png");
   position: absolute;
   height: 399px;
 	width: 300px;
