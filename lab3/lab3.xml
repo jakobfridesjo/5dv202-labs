@@ -1,0 +1,76 @@
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+    </head> 
+    <body>
+        {    
+        let $sr := doc("sr.xml")
+        return
+        <div>
+            <h2>0. Example query: Names of all channels of type Rikskanal</h2>
+            <ul id="query0">
+                {
+                    for $c in $sr/sr/channels/channel
+                        where $c/channeltype = "Rikskanal"
+                        return <li>{string($c/name)}</li>
+                }
+            </ul>
+
+            <h2>1. List the distinct editors of the channel with the id 132</h2>
+            <ul id="query1">
+                {
+                    for $e in distinct-values($sr/sr/programs/program[channel = 132]/editor)
+                        return<li>{string($e)}</li>
+                }
+            </ul>
+
+            <h2>2. List the distinct names of the editors of broadcasts with a duration less than 143</h2>
+            <ul id="query2">
+                {
+                  for $b in distinct-values($sr/sr/programs/program)
+                    where 143 > $b/duration
+                        return<li>{string($b)}</li>
+                }
+            </ul>
+
+            <h2>3. List the total time of all broadcasts of channel P6</h2>
+            <ul id="query3">
+                {
+                    <li>{concat('your',' answer')}</li>
+                }
+            </ul>
+
+            <h2>4. List editors of channel P2, along with the amount of distinct categories they have worked on, on the format 'Editor,categories'</h2>
+            <ul id="query4">
+                {
+                    <li>{concat('your',' answer')}</li>
+                }
+            </ul>
+            <h2>5. List the distinct editors who have never worked on channel P3</h2>
+            <ul id="query5">
+                {
+                    <li>{concat('your',' answer')}</li>
+                }
+            </ul>
+            <h2>6. List the top 7 programs names in terms of highest total broadcast time</h2>
+            <ul id="query6">
+                {
+                    <li>{concat('your',' answer')}</li>
+                }
+            </ul>
+            <h2>7. List the lastest broadcast date with the category 'Livsåskådning'.</h2>
+            <ul id="query7">
+                {
+                    <li>{concat('your',' answer')}</li>
+                }
+            </ul>
+            <h2>8. List the 6-10th best editors in terms of highest total broadcast time of programs with category 'Musik'</h2>
+            <ul id="query8">
+                {
+                    <li>{concat('your',' answer')}</li>
+                }
+            </ul>
+        </div>
+        }
+    </body>
+</html>
