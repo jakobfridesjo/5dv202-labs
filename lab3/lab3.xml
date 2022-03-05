@@ -19,37 +19,42 @@
             <h2>1. List the distinct editors of the channel with the id 132</h2>
             <ul id="query1">
                 {
-                    for $e in distinct-values($sr/sr/programs/program[channel = 132]/editor)
-                        return<li>{string($e)}</li>
+                    for $editors in distinct-values($sr/sr/programs/program[channel = 132]/editor)
+                        return<li>{string($editors)}</li>
                 }
             </ul>
 
             <h2>2. List the distinct names of the editors of broadcasts with a duration less than 143</h2>
             <ul id="query2">
                 {
-                  for $b in distinct-values($sr/sr/programs/program)
-                    where 143 > $b/duration
-                        return<li>{string($b)}</li>
+                  let $broadcasts := $sr/sr/broadcasts/broadcast[143 > duration]
+                  for $editors in distinct-values($sr/sr/programs/program[@id = $broadcasts/program]/editor) 
+                    return<li>{string($editors)}</li>
                 }
             </ul>
 
             <h2>3. List the total time of all broadcasts of channel P6</h2>
             <ul id="query3">
                 {
-                    <li>{concat('your',' answer')}</li>
+                  let $channelId := $sr/sr/channels/channel[name='P6']/@id
+                  let $programIds := $sr/sr/programs/program[channel = $channelId]/@id
+                  let $duration := sum($sr/sr/broadcasts/broadcast[program = $programIds]/duration)
+                  return<li>{string($duration)}</li>
                 }
             </ul>
 
             <h2>4. List editors of channel P2, along with the amount of distinct categories they have worked on, on the format 'Editor,categories'</h2>
             <ul id="query4">
                 {
-                    <li>{concat('your',' answer')}</li>
-                }
+                  let $channelId := $sr/sr/channels/channel[name='P2']/@id
+                  let $editors := $sr/sr/programs/program[channel = $channelId]/editor
+                  return<li>{string($editors)}</li>
+                 }
             </ul>
             <h2>5. List the distinct editors who have never worked on channel P3</h2>
             <ul id="query5">
                 {
-                    <li>{concat('your',' answer')}</li>
+                    return <li>{concat($distinct-value(editors), ',', $)}</li>
                 }
             </ul>
             <h2>6. List the top 7 programs names in terms of highest total broadcast time</h2>
